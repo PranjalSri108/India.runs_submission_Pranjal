@@ -1,0 +1,18 @@
+# Data pool — too big for git (~465 MB). See README for how to obtain it.
+data/candidates.jsonl
+data/candidates.jsonl.gz
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Local agent config
+.claude/

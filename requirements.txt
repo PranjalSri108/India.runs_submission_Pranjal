@@ -1,0 +1,3 @@
+# Keep minimal and pinned. The core ranker is pure-Python stdlib (gzip, json).
+# Test runner used from Phase 1 onward.
+pytest==8.2.0
