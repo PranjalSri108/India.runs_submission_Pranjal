@@ -98,6 +98,8 @@ def extract_features(c):
     prof_w = {"beginner": 0.3, "intermediate": 0.6, "advanced": 0.85, "expert": 1.0}
     core_skill_score = 0.0
     nice_skill_score = 0.0
+    matched_core_skills = []   # (name, contribution) of skills that matched CORE
+    matched_nice_skills = []   # (name, contribution) of skills that matched NICE
     for s in c.get("skills", []):
         name = _lower(s.get("name"))
         d = s.get("duration_months") or 0
@@ -106,8 +108,13 @@ def extract_features(c):
         weight = prof_w.get(s.get("proficiency"), 0.5) * min(1.0, credited / 3.0)
         if any(t in name for t in CORE_SKILL_TERMS):
             core_skill_score += weight
+            matched_core_skills.append((s.get("name"), weight))
         elif any(t in name for t in NICE_SKILL_TERMS):
             nice_skill_score += weight * 0.5
+            matched_nice_skills.append((s.get("name"), weight * 0.5))
+    # strongest-first, so reasoning can name the most credible matches
+    matched_core_skills.sort(key=lambda t: -t[1])
+    matched_nice_skills.sort(key=lambda t: -t[1])
 
     # --- FIT: experience-band fit (5-9 sweet spot, soft falloff) ------------
     if 5 <= yoe <= 9:
@@ -202,6 +209,8 @@ def extract_features(c):
         "applied_ml_years": applied_ml_years,
         "core_skill_score": core_skill_score,
         "nice_skill_score": nice_skill_score,
+        "matched_core_skills": matched_core_skills,
+        "matched_nice_skills": matched_nice_skills,
         "band_fit": band_fit,
         "seniority_gate": seniority_gate,
         "product_ratio": product_ratio,
