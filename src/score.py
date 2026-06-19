@@ -7,12 +7,14 @@ prototype was validated with (do not tune here yet).
 
 The scoring model (PLAN section 0), every term explainable:
 
-    final = max(0, fit - penalties) * behavior_mult * location_fit * impossibility
+    final = max(0, fit - penalties)
+            * behavior_mult * location_fit * impossibility * seniority_gate
 
 where `fit` is a weighted sum of the positive feature components. Penalties are
-subtracted (the JD's explicit disqualifiers); behavior, location, and
-impossibility are multiplicative *gates* so a perfect-on-paper but unavailable,
-mislocated, or internally impossible candidate collapses regardless of fit.
+subtracted (the JD's explicit disqualifiers); behavior, location, impossibility
+and seniority are multiplicative *gates* so a perfect-on-paper but unavailable,
+mislocated, internally impossible, or well-over-band candidate collapses
+regardless of fit.
 """
 
 from __future__ import annotations
@@ -31,12 +33,27 @@ WEIGHTS = {
     "eval_signal": 0.6,        # JD must-have: evaluation frameworks (NDCG/MRR/AB)
 }
 
+# applied_ml_years is the dominant term, so raw years let a 15-year profile run
+# away with it even though the JD wants ~4-5. We saturate it: full credit up to
+# the cap, then a shallow slope so additional years add real but diminishing
+# value. This keeps the term from being a pure seniority proxy.
+ML_YEARS_CAP = 5.0
+ML_YEARS_OVER_SLOPE = 0.3
+
+
+def _saturate_ml_years(x: float) -> float:
+    if x <= ML_YEARS_CAP:
+        return x
+    return ML_YEARS_CAP + ML_YEARS_OVER_SLOPE * (x - ML_YEARS_CAP)
+
 
 def fit_score(f: dict) -> float:
     """Weighted sum of the positive fit components (pre-penalty, pre-gates)."""
     total = 0.0
     for key, w in WEIGHTS.items():
         v = f[key]
+        if key == "applied_ml_years":
+            v = _saturate_ml_years(v)
         total += w * (1.0 if v is True else (0.0 if v is False else v))
     return total
 
@@ -49,4 +66,5 @@ def score(f: dict) -> float:
         * f["behavior_mult"]
         * f["location_fit"]
         * f["impossibility"]
+        * f["seniority_gate"]
     )

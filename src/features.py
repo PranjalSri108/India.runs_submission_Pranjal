@@ -117,6 +117,18 @@ def extract_features(c):
     else:
         band_fit = max(0.0, 1 - (yoe - 9) * 0.10)    # gentler above 9
 
+    # Seniority gate: a multiplicative penalty for being well over the band. The
+    # additive band_fit bonus (weight ~1) is far too small to demote a 15-year
+    # profile that otherwise scores high; the JD explicitly disqualifies seniors
+    # who have likely drifted from hands-on IC work. So past the band top (~8 yrs)
+    # we apply a real, steepening haircut: a 9-year IC takes a small hit, a
+    # 16-year profile collapses toward the tier-3 band. Floored so a strong
+    # over-band IC is demoted, not annihilated.
+    BAND_GATE_START = 8.0
+    BAND_GATE_SLOPE = 0.10
+    BAND_GATE_FLOOR = 0.10
+    seniority_gate = max(BAND_GATE_FLOOR, 1 - max(0.0, yoe - BAND_GATE_START) * BAND_GATE_SLOPE)
+
     # --- PENALTIES: the JD's explicit disqualifiers -------------------------
     penalties = 0.0
     reasons = []
@@ -191,6 +203,7 @@ def extract_features(c):
         "core_skill_score": core_skill_score,
         "nice_skill_score": nice_skill_score,
         "band_fit": band_fit,
+        "seniority_gate": seniority_gate,
         "product_ratio": product_ratio,
         "shipped_system": shipped_system,
         "eval_signal": eval_signal,
