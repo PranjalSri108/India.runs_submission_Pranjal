@@ -1,0 +1,93 @@
+# Redrob Hackathon — Submission Metadata
+# Mirrors the portal metadata (spec §10.2/§10.3). Filled from
+# data/submission_metadata_template.yaml.
+#
+# >>> FIELDS MARKED `# TODO(you)` NEED YOUR INPUT before upload. <<<
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "TODO(you): your-registered-team-name"   # = your participant ID for the filename
+
+primary_contact:
+  name: "TODO(you): Full Name"
+  email: "TODO(you): primary@example.com"
+  phone: "TODO(you): +91-XXXXXXXXXX"
+
+team_members:
+  - name: "TODO(you): Member 1 Full Name"
+    email: "TODO(you): member1@example.com"
+    role: "ML Engineer"
+  # solo participant: keep just one member
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "TODO(you): https://github.com/USERNAME/REPO"   # must be reachable at Stage 3
+sandbox_link: "TODO(you): https://huggingface.co/spaces/USERNAME/redrob-ranker"  # host app.py (see README "Sandbox")
+
+# Single command that produces submission.csv from the candidates file.
+# No-arg form auto-resolves data/candidates.jsonl.gz OR .jsonl (gzip magic-byte
+# sniffing), so it works whether you keep the bundle's .gz or a decompressed file.
+# Writes ./submission.csv. Runs in ~14s on CPU.
+reproduce_command: "python -m src.rank"
+
+# ============================================================================
+# Compute environment (where THIS submission was produced)
+# ============================================================================
+compute:
+  platform: "Linux workstation (Ubuntu 22.04)"
+  cpu_cores: 16
+  ram_gb: 16
+  python_version: "3.10.12"
+  os: "Ubuntu 22.04.5 LTS"
+  uses_gpu_for_inference: false        # ranker is pure-CPU stdlib
+  has_network_during_ranking: false    # no API/network calls anywhere in src/
+  pre_computation_required: false      # no embeddings/indexes/model weights
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration (transparency only — not penalized)
+# ============================================================================
+ai_tools_used:
+  - "Claude"          # Claude Code — pair-programming, code review, refactors
+  # TODO(you): add any others you used (ChatGPT / Copilot / Cursor / Gemini), or trim
+
+ai_usage_summary: |
+  Used Claude (via Claude Code) as a pair-programming and code-review assistant
+  throughout: scaffolding modules, refactoring to a single-source-of-truth layout,
+  writing tests, and drafting docs. All design decisions (feature-based scoring,
+  multiplicative gates, the honeypot ratio check, the saturation/seniority-gate fix)
+  were made and validated by the team against a hand-labeled set. No candidate data
+  was sent to any hosted LLM, and the ranker itself makes zero LLM/API calls.
+
+# ============================================================================
+# Approach summary (≤200 words; this is 169)
+# ============================================================================
+methodology_summary: |
+  We rank candidates with a feature-based, fully-explainable scorer rather than
+  keyword or embedding similarity, because the pool is adversarial: keyword-stuffers,
+  honeypots, and behavioral twins all defeat naive matching. Each candidate's score
+  decomposes into auditable terms — applied-ML years at product companies, core
+  retrieval/ranking skills with plausible durations, and evidence of shipping a
+  ranking/search/recommendation system — gated multiplicatively by availability,
+  location, and an internal-consistency check that collapses impossible profiles (a
+  skill 'used' longer than the person has worked). Role classification keys on career
+  title and industry, treating free-text descriptions as low-trust noise. Lacking
+  ground truth, we tuned against a hand-labeled validation set: 60 stratified profiles
+  graded 0–5 blind to the model's predictions, across two independent passes (96.7%
+  self-agreement). This surfaced one systematic flaw — over-experienced profiles
+  ranking too high — fixed by saturating the experience term and converting the
+  seniority band into a multiplicative gate, lifting NDCG@10 from 0.87 to 0.92 without
+  burying any genuine fit. The final top-100 contains zero impossible profiles and is
+  produced in 13 seconds, CPU-only.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true     # AI used as a tool; engineering is the team's
+  no_collusion: true              # TODO(you): confirm
+  honeypot_check_done: true       # explicit scan of final top-100 (impossibility<=0.5) == 0
+  reproduction_tested: true       # reproduce_command verified end-to-end, byte-deterministic

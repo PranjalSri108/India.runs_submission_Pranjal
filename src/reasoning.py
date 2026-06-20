@@ -21,6 +21,8 @@ Tone tracks rank: top-10 confident, mid-pack measured, deep cautious.
 
 from __future__ import annotations
 
+import hashlib
+
 from .features import TODAY, _parse_date
 
 
@@ -28,9 +30,16 @@ def _r1(x):
     return f"{x:.1f}"
 
 
+def _stable_hash(s):
+    """Process-independent hash. Python's builtin hash() is salted per-run by
+    PYTHONHASHSEED, which would make wording (and thus submission.csv) non-
+    deterministic across runs; md5 of the id is stable everywhere."""
+    return int(hashlib.md5(s.encode("utf-8")).hexdigest(), 16)
+
+
 def _pick(cid, options):
     """Deterministic per-candidate choice (varies wording without RNG state)."""
-    return options[hash(cid) % len(options)]
+    return options[_stable_hash(cid) % len(options)]
 
 
 def _cap(s):

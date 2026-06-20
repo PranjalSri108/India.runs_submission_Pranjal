@@ -1,0 +1,4 @@
+# Sandbox/demo only (app.py). NOT needed to produce submission.csv — the ranker
+# itself is pure Python stdlib (see requirements.txt). Kept separate so the
+# Stage-3 ranking reproduction stays dependency-free.
+streamlit==1.38.0

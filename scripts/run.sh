@@ -11,6 +11,9 @@ PYBIN=".venv/bin/python"
 [ -x "$PYBIN" ] || PYBIN="python3"
 # Clear PYTHONPATH so a system/ROS site-packages doesn't shadow our imports.
 export PYTHONPATH=
+# Determinism: pin the hash seed so output is byte-identical run to run.
+# (The reasoning generator also uses a stable md5 hash, so this is belt-and-braces.)
+export PYTHONHASHSEED=0
 
 TIMEFILE="$(mktemp)"
 trap 'rm -f "$TIMEFILE"' EXIT
@@ -31,4 +34,4 @@ echo "peak RAM: ${PEAK_GB} GB  (budget: 16 GB)"
 
 echo
 echo "=== validating submission.csv ==="
-"$PYBIN" validate_submission.py submission.csv
+"$PYBIN" data/validate_submission.py submission.csv
