@@ -134,8 +134,8 @@ on the score-breakdown chart). It runs the **real `src/` ranker** (never a
 reimplementation) live on `data/sample_candidates.json`, and reads the committed
 `submission.csv` for the actual top-100. Three views:
 
-1. **Ranked list & audit** — two-pane (with the search/filters in a control row
-   above): pick any candidate on the left, and the right panel shows the full score
+1. **Ranked list & audit** — two-pane (with the score-range / top-N filters in a
+   control row above): pick any candidate on the left, and the right panel shows the full score
    decomposition — additive fit terms (green), the penalty (red), then the
    multiplicative gates as explicit neutral `×` steps down to the final score, plus
    the reasoning and the underlying career/skills/signals.

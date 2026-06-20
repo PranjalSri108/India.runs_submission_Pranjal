@@ -257,25 +257,17 @@ def trap_card(item, tag, verdict, verdict_good):
 # ---------- views -----------------------------------------------------------
 def view_ranked(ranked):
     max_score = float(ranked[0]["score"]) + 0.5
-    arches = sorted({it["archetype"] for it in ranked})
-    fc = st.columns([3, 3, 3, 2], gap="medium")
-    q = fc[0].text_input("Search", "", placeholder="title / company / id")
-    picked = fc[1].multiselect("Archetype", arches, default=arches)
-    lo, hi = fc[2].slider("Score range", 0.0, max_score, (0.0, max_score), step=0.5)
-    topn = fc[3].slider("Show top N", 5, len(ranked), min(20, len(ranked)))
+    fc = st.columns([3, 2], gap="medium")
+    lo, hi = fc[0].slider("Score range", 0.0, max_score, (0.0, max_score), step=0.5)
+    topn = fc[1].slider("Show top N", 5, len(ranked), min(20, len(ranked)))
     st.divider()
 
-    def keep(it):
-        c = it["cand"]; p = c["profile"]
-        hay = f'{p.get("current_title","")} {p.get("current_company","")} {c["candidate_id"]}'.lower()
-        return (q.lower() in hay) and (lo <= it["score"] <= hi) and (it["archetype"] in picked)
-
-    filt = [it for it in ranked if keep(it)][:topn]
+    filt = [it for it in ranked if lo <= it["score"] <= hi][:topn]
     left, right = st.columns([5, 7], gap="medium")
     with left:
         st.markdown("**Ranked candidates** — select one to audit")
         if not filt:
-            st.info("No candidates match these filters. Widen the score range or clear the search.")
+            st.info("No candidates match this score range. Widen it to see results.")
             return
         df = pd.DataFrame([{
             "rank": it["rank"],
