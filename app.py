@@ -111,7 +111,13 @@ def breakdown(f):
             "cascade": cascade, "final": running, "ref": score(f)}
 
 
-# ---------- charts (native Altair/Streamlit theme — no custom palette) -------
+# Chart-only accent colors for the score-decomposition breakdown. The rest of the
+# app stays on the native Streamlit theme; these apply solely to the charts below.
+# Mid-tones chosen to read on both the light and dark default backgrounds.
+FIT_GREEN, PEN_RED, GATE_NEUTRAL = "#1F9D6B", "#D1495B", "#808495"
+
+
+# ---------- charts ----------------------------------------------------------
 def fit_chart(bd):
     rows = [{"label": t["label"], "value": t["contribution"], "kind": "fit"}
             for t in bd["terms"] if t["contribution"] > 1e-4]
@@ -122,7 +128,8 @@ def fit_chart(bd):
     enc = alt.Chart(df).encode(
         y=alt.Y("label:N", sort=order, title=None),
         x=alt.X("value:Q", title="weighted contribution to fit"),
-        color=alt.Color("kind:N", legend=None),
+        color=alt.Color("kind:N", scale=alt.Scale(domain=["fit", "penalty"],
+                        range=[FIT_GREEN, PEN_RED]), legend=None),
         tooltip=[alt.Tooltip("label:N", title="term"),
                  alt.Tooltip("value:Q", title="contribution", format="+.2f")],
     )
@@ -133,22 +140,19 @@ def fit_chart(bd):
 
 
 def gate_chart(bd):
-    rows = [{"step": "fit − penalties", "value": bd["base"], "type": "base"}]
+    rows = [{"step": "fit − penalties", "value": bd["base"]}]
     for c in bd["cascade"]:
-        cut = c["mult"] < 0.999
-        rows.append({"step": f"× {c['short']} ({c['mult']:.2f})", "value": c["running"],
-                     "type": "cut" if cut else "gate"})
-    rows.append({"step": "= final", "value": bd["final"], "type": "final"})
+        rows.append({"step": f"× {c['short']} ({c['mult']:.2f})", "value": c["running"]})
+    rows.append({"step": "= final", "value": bd["final"]})
     df = pd.DataFrame(rows)
     order = [r["step"] for r in rows]
     enc = alt.Chart(df).encode(
         y=alt.Y("step:N", sort=order, title=None),
         x=alt.X("value:Q", title="running score after each multiplicative gate"),
-        color=alt.Color("type:N", legend=None),
         tooltip=[alt.Tooltip("step:N", title="step"),
                  alt.Tooltip("value:Q", title="running score", format=".2f")],
     )
-    bars = enc.mark_bar()
+    bars = enc.mark_bar(color=GATE_NEUTRAL)  # gates kept neutral — see brief
     val = enc.mark_text(align="left", dx=4, baseline="middle").encode(
         text=alt.Text("value:Q", format=".2f"))
     return (bars + val).properties(height=max(160, 36 * len(rows)))
@@ -252,14 +256,14 @@ def trap_card(item, tag, verdict, verdict_good):
 
 # ---------- views -----------------------------------------------------------
 def view_ranked(ranked):
-    with st.sidebar:
-        st.header("Filters")
-        q = st.text_input("Search title / company / id", "")
-        lo, hi = st.slider("Score range", 0.0, float(ranked[0]["score"]) + 0.5,
-                           (0.0, float(ranked[0]["score"]) + 0.5), step=0.5)
-        arches = sorted({it["archetype"] for it in ranked})
-        picked = st.multiselect("Archetype", arches, default=arches)
-        topn = st.slider("Show top N", 5, len(ranked), min(20, len(ranked)))
+    max_score = float(ranked[0]["score"]) + 0.5
+    arches = sorted({it["archetype"] for it in ranked})
+    fc = st.columns([3, 3, 3, 2], gap="medium")
+    q = fc[0].text_input("Search", "", placeholder="title / company / id")
+    picked = fc[1].multiselect("Archetype", arches, default=arches)
+    lo, hi = fc[2].slider("Score range", 0.0, max_score, (0.0, max_score), step=0.5)
+    topn = fc[3].slider("Show top N", 5, len(ranked), min(20, len(ranked)))
+    st.divider()
 
     def keep(it):
         c = it["cand"]; p = c["profile"]
@@ -362,7 +366,7 @@ def view_top100():
 # ---------- app -------------------------------------------------------------
 def main():
     st.set_page_config(page_title="Redrob Ranker — explainable ranking",
-                       layout="wide", initial_sidebar_state="expanded")
+                       layout="wide", initial_sidebar_state="collapsed")
 
     st.title("Redrob Ranker")
     st.caption("INTELLIGENT CANDIDATE DISCOVERY & RANKING")

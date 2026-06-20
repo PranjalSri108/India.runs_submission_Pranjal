@@ -128,15 +128,16 @@ bash scripts/run.sh
 
 ## Sandbox / demo
 
-`app.py` is a Streamlit explainability demo built entirely from native Streamlit
-components on the default theme (no custom CSS, colors, or fonts). It runs the
-**real `src/` ranker** (never a reimplementation) live on
-`data/sample_candidates.json`, and reads the committed `submission.csv` for the
-actual top-100. Three views:
+`app.py` is a Streamlit explainability demo built from native Streamlit components
+on the default theme (no custom CSS or fonts; the only color accents are green/red
+on the score-breakdown chart). It runs the **real `src/` ranker** (never a
+reimplementation) live on `data/sample_candidates.json`, and reads the committed
+`submission.csv` for the actual top-100. Three views:
 
-1. **Ranked list & audit** — two-pane: pick any candidate on the left, and the right
-   panel shows the full score decomposition — additive fit term bars, the penalty,
-   then the multiplicative gates as explicit `×` steps down to the final score, plus
+1. **Ranked list & audit** — two-pane (with the search/filters in a control row
+   above): pick any candidate on the left, and the right panel shows the full score
+   decomposition — additive fit terms (green), the penalty (red), then the
+   multiplicative gates as explicit neutral `×` steps down to the final score, plus
    the reasoning and the underlying career/skills/signals.
 2. **How it handles traps** — a keyword-stuffer, a genuine fit, and a honeypot side by
    side, so you can see the system defeat the adversarial cases (skills-vs-career
