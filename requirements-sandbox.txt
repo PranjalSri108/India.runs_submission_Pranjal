@@ -1,4 +1,6 @@
 # Sandbox/demo only (app.py). NOT needed to produce submission.csv — the ranker
 # itself is pure Python stdlib (see requirements.txt). Kept separate so the
 # Stage-3 ranking reproduction stays dependency-free.
+# (pandas ships as a hard dependency of streamlit, so it isn't listed separately.)
 streamlit==1.38.0
+altair==5.5.0

@@ -128,10 +128,19 @@ bash scripts/run.sh
 
 ## Sandbox / demo
 
-`app.py` is a dependency-light Streamlit app that loads `data/sample_candidates.json`,
-runs the **real `src/` ranker** (not a reimplementation), and shows the ranked table
-with each candidate's score, generated reasoning, and an expandable per-term score
-breakdown — the explainability, made visible.
+`app.py` is a Streamlit explainability demo (custom "evidence ledger" theme in
+`.streamlit/config.toml`). It runs the **real `src/` ranker** (never a
+reimplementation) live on `data/sample_candidates.json`, and reads the committed
+`submission.csv` for the actual top-100. Three views:
+
+1. **Ranked list & audit** — two-pane: pick any candidate on the left, and the right
+   panel shows the full score decomposition — additive fit terms (green bars),
+   penalties (red), then the multiplicative gates as explicit `×` steps down to the
+   final score, plus the reasoning and the underlying career/skills/signals.
+2. **How it handles traps** — a keyword-stuffer, a genuine fit, and a honeypot side by
+   side, so you can see the system defeat the adversarial cases (skills-vs-career
+   mismatch; impossible skill duration collapsed by the impossibility gate).
+3. **Actual top-100** — the committed `submission.csv`, searchable.
 
 ```bash
 pip install -r requirements-sandbox.txt
@@ -139,7 +148,8 @@ streamlit run app.py
 ```
 
 Deploys as-is to HuggingFace Spaces / Streamlit Cloud (point the Space at this repo;
-entrypoint `app.py`).
+entrypoint `app.py`). The breakdown numbers are computed from `src/score.py` itself,
+so they match the ranker exactly.
 
 ## Submitting
 

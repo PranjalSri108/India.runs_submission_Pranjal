@@ -1,0 +1,15 @@
+# Redrob Ranker sandbox theme — "evidence ledger".
+# Cool paper + ink, deep-teal accent. Fonts are refined further via CSS in app.py
+# (Space Grotesk / Inter / IBM Plex Mono).
+[theme]
+primaryColor = "#0E7C86"
+backgroundColor = "#F4F5F7"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#161B26"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
