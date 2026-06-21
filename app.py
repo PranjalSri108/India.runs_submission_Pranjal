@@ -369,7 +369,7 @@ def main():
     st.divider()
 
     metrics = [("NDCG@10", "0.93"), ("NDCG@50", "0.99"), ("Kendall τ", "+0.77"),
-               ("Honeypots in top-100", "0"), ("Runtime · 100K · CPU", "~14 s")]
+               ("Honeypots in top-100", "0"), ("Runtime · 100K · CPU", "~20 s")]
     for col, (label, value) in zip(st.columns(len(metrics)), metrics):
         col.metric(label, value)
     st.divider()

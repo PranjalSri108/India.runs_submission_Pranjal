@@ -6,7 +6,7 @@ ranking/search/recommendation systems.
 
 The design thesis in one line: **score what someone built, not what they listed.**
 
-Runs over all 100,000 profiles in **~14 seconds**, **CPU-only**, Python **standard
+Runs over all 100,000 profiles in **~20 seconds**, **CPU-only**, Python **standard
 library only** — no GPU, no network, no LLM calls at ranking time. Output is
 **byte-for-byte deterministic** across runs.
 
@@ -18,7 +18,7 @@ library only** — no GPU, no network, no LLM calls at ranking time. Output is
 |---|---|
 | NDCG@10 / NDCG@50 / Kendall τ | **0.93 / 0.99 / +0.77** (hand-labeled 60-profile set) |
 | Honeypots in the top-100 | **0** (spec auto-DQ threshold is 10%) |
-| Runtime · 100K · CPU | **~14 s** (budget 5 min) · peak RAM 0.81 GB |
+| Runtime · 100K · CPU | **~20 s** (budget 5 min) · peak RAM 0.81 GB |
 | Output | **byte-for-byte deterministic**, reproduced from a clean clone |
 
 Validated **without ground truth** by two-pass blind hand-labeling (96.7% inter-pass
@@ -271,7 +271,7 @@ Production-run facts (full 100K, this machine, CPU-only):
 
 | | |
 |---|---|
-| Runtime | **13.8 s** (budget: 5 min) |
+| Runtime | **~20 s** (20.3 s measured; budget: 5 min) |
 | Peak RAM | **0.81 GB** (budget: 16 GB) |
 | Honeypots in top-100 | **0** (disqualified above 10) |
 | Distinct scores | 100 / 100 |
