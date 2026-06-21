@@ -59,6 +59,49 @@ def _parse_date(s):
         return None
 
 
+# --- Assessment/endorsement corroboration on the relevant-skill term (Phase 9) ---
+# Signal #9 (redrob_signals.skill_assessment_scores: skill_name -> 0..100) plus
+# per-skill endorsements, used as a *corroboration multiplier* centered at 1.0 on
+# each relevant skill's contribution. It rewards a claim the Redrob assessment
+# backs, discounts a claim the assessment contradicts (the keyword-stuffer counter:
+# a claimed "expert" with a low score is exposed), and stays NEUTRAL when there is
+# no assessment — coverage is sparse (~8% of relevant skills), so absence is not
+# evidence of weakness and must not penalise genuine experts. Endorsements are
+# dense but noisy, so they only ever nudge upward, never down.
+USE_ASSESSMENT_CORROB = True   # toggle for before/after validation
+CORROB_PIVOT = 50.0            # ~ population median assessment (~53)
+CORROB_MAX_BOOST = 0.25        # at/above pivot+HI_REF -> +25%
+CORROB_MAX_DISC = 0.40         # at/below pivot-LO_REF -> -40%
+CORROB_HI_REF = 25.0           # points above pivot for full boost (~75)
+CORROB_LO_REF = 20.0           # points below pivot for full discount (~30)
+CORROB_STUFFER_MULT = 0.80     # extra haircut: advanced/expert claim, assessment < 40
+CORROB_ENDORSE_MIN = 20        # endorsements at/above this (no assessment) -> small boost
+CORROB_ENDORSE_BOOST = 0.05
+
+
+def _skill_corroboration(proficiency, assessment, endorsements):
+    """Multiplier in ~[0.48, 1.25] on a relevant skill's contribution.
+
+    `assessment` is the Redrob 0..100 score for this skill, or None if the
+    candidate has no assessment for it. Returns 1.0 (neutral) when there is no
+    assessment and endorsements are unremarkable.
+    """
+    if not USE_ASSESSMENT_CORROB:
+        return 1.0
+    if assessment is not None:
+        if assessment >= CORROB_PIVOT:
+            m = 1.0 + CORROB_MAX_BOOST * min(1.0, (assessment - CORROB_PIVOT) / CORROB_HI_REF)
+        else:
+            m = 1.0 - CORROB_MAX_DISC * min(1.0, (CORROB_PIVOT - assessment) / CORROB_LO_REF)
+        if proficiency in ("advanced", "expert") and assessment < 40:
+            m *= CORROB_STUFFER_MULT   # claimed strong, Redrob assessment says otherwise
+        return m
+    # No assessment: neutral, with only a faint upward nod for heavy endorsement.
+    if (endorsements or 0) >= CORROB_ENDORSE_MIN:
+        return 1.0 + CORROB_ENDORSE_BOOST
+    return 1.0
+
+
 def extract_features(c):
     """Extract raw, unrounded feature components for one candidate.
 
@@ -96,6 +139,7 @@ def extract_features(c):
 
     # --- FIT: relevant skills (proficiency x plausible duration) ------------
     prof_w = {"beginner": 0.3, "intermediate": 0.6, "advanced": 0.85, "expert": 1.0}
+    sas = sig.get("skill_assessment_scores") or {}   # skill_name -> 0..100 (signal #9)
     core_skill_score = 0.0
     nice_skill_score = 0.0
     matched_core_skills = []   # (name, contribution) of skills that matched CORE
@@ -106,6 +150,9 @@ def extract_features(c):
         # cap credited duration at the person's actual experience (anti-stuffing)
         credited = min(d, yoe * 12) / 12.0
         weight = prof_w.get(s.get("proficiency"), 0.5) * min(1.0, credited / 3.0)
+        # corroborate the claim against the Redrob assessment + endorsements
+        weight *= _skill_corroboration(s.get("proficiency"),
+                                       sas.get(s.get("name")), s.get("endorsements"))
         if any(t in name for t in CORE_SKILL_TERMS):
             core_skill_score += weight
             matched_core_skills.append((s.get("name"), weight))

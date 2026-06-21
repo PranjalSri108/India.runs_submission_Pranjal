@@ -118,3 +118,37 @@ everywhere.
 **Why.** Tuning should never mean hunting through logic, and an auditor (or
 interviewer) should find every value in one place. It also made the Phase-4 fix a
 localized, reviewable change rather than a scatter of edits.
+
+### 8. Assessment-score corroboration on the skill term (kept, but marginal)
+
+**Decision.** Multiply each relevant (core/nice) skill's contribution by a
+corroboration factor centered at 1.0, driven by Redrob signal #9
+(`skill_assessment_scores`) and per-skill `endorsements`: assessment ≥50 boosts up
+to +25%, <50 discounts down to −40%, an "advanced/expert" claim the assessment
+contradicts (<40) takes an extra ×0.8, *absent* assessment stays neutral, and
+endorsements only nudge upward. No `WEIGHTS` value changed; the lever is a new
+modifier inside `features.py`, behind a `USE_ASSESSMENT_CORROB` toggle.
+
+**Alternative.** (a) Ignore the signal — it was the highest-value untapped one.
+(b) Penalise *absent* assessments too, or fold it into the impossibility gate.
+
+**Why.** It is the direct counter to the keyword-stuffer trap: a claimed "expert"
+skill the platform's own assessment scores low is exposed (honeypot CAND_0000011 —
+"advanced" Recommendation Systems, assessment 29.8 — is discounted; the genuine fit
+CAND_0000031, FAISS 68 / MLflow 75, is boosted). We rejected penalising *absence*
+because coverage is sparse — only ~8% of relevant skills (and 18% of advanced/expert
+core skills) carry an assessment, so absence is the norm even for genuine experts;
+docking it would punish real fits. Endorsements are 100%-dense but noisy, so they
+only ever boost.
+
+**The honest result.** Validated on the hand-labeled set (52 labels, 8
+low-confidence excluded), before → after: NDCG@10 1.0000 → 1.0000 (already at
+ceiling), NDCG@50 0.9975 → 0.9980, Kendall τ-b +0.7632 → +0.7649, FALSE 0 → 0,
+MISS 0 → 0. It clears the keep-rule (τ up, NDCG@50 not down, no new FALSE) and the
+movement is qualitatively correct — but the gain is *small*, because NDCG@10 was
+maxed and only ~20/52 labels carry the signal on a relevant skill (just one has the
+low-backed-expert case). Kept on the discipline "kept only if it measurably helps
+and never hurts"; it is the kind of signal whose value should grow on the full
+hidden set, where assessment coverage and stuffer density are higher than in our
+small proxy. The honeypot guarantee (0 impossible profiles in the final top-100)
+and byte-for-byte determinism are preserved.
