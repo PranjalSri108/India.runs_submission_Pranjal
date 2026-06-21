@@ -368,8 +368,8 @@ def main():
                 "every number below traces to a fact in the profile.")
     st.divider()
 
-    metrics = [("NDCG@10", "0.92"), ("NDCG@50", "0.98"), ("Kendall τ", "+0.76"),
-               ("Honeypots in top-100", "0"), ("Runtime · 100K · CPU", "~13 s")]
+    metrics = [("NDCG@10", "0.93"), ("NDCG@50", "0.99"), ("Kendall τ", "+0.77"),
+               ("Honeypots in top-100", "0"), ("Runtime · 100K · CPU", "~14 s")]
     for col, (label, value) in zip(st.columns(len(metrics)), metrics):
         col.metric(label, value)
     st.divider()

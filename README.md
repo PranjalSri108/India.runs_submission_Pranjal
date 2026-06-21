@@ -12,6 +12,20 @@ library only** — no GPU, no network, no LLM calls at ranking time. Output is
 
 ---
 
+## Results at a glance
+
+| | |
+|---|---|
+| NDCG@10 / NDCG@50 / Kendall τ | **0.93 / 0.99 / +0.77** (hand-labeled 60-profile set) |
+| Honeypots in the top-100 | **0** (spec auto-DQ threshold is 10%) |
+| Runtime · 100K · CPU | **~14 s** (budget 5 min) · peak RAM 0.81 GB |
+| Output | **byte-for-byte deterministic**, reproduced from a clean clone |
+
+Validated **without ground truth** by two-pass blind hand-labeling (96.7% inter-pass
+agreement). Full method in [Validation methodology](#validation-methodology-no-ground-truth)
+and [Results](#results); every design trade-off is defended in `DECISIONS.md`, and the
+adversarial cases are quantified in `eval/TRAP_HANDLING.md`.
+
 ## The problem
 
 The candidate pool is adversarial. A naive "match the job's keywords against each
@@ -231,17 +245,27 @@ carry weight too.
 
 Measured on the 60-profile hand-labeled validation set:
 
-| Metric | Baseline | After tuning |
-|---|---|---|
-| NDCG@10 | 0.871 | **0.924** |
-| NDCG@50 | 0.952 | **0.982** |
-| Kendall tau-b | +0.722 | **+0.764** |
-| Buried fits (MISS) | 1\* | 1\* |
-| Surfaced junk (FALSE) | 0 | 0 |
+| Metric | Baseline | After tuning (Phase 4) | Phase 8–9 (current) |
+|---|---|---|---|
+| NDCG@10 | 0.871 | 0.924 | **0.933** |
+| NDCG@50 | 0.952 | 0.982 | **0.988** |
+| Kendall tau-b | +0.722 | +0.764 | **+0.771** |
+| Buried fits (MISS) | 1\* | 1\* | 2\* |
+| Surfaced junk (FALSE) | 0 | 0 | 0 |
 
-\* The MISS flag is an over-band profile correctly labeled tier-3 that legitimately
-ranks in the low thousands — not a buried fit. No tier-5 is buried and no tier-≤1 is
-surfaced into the top 50 in either configuration.
+\* MISS = a tier-3+ profile ranked past 100. Every one is an **over-band** profile
+(15–16 yrs, ~2× the ideal band) the seniority gate correctly demotes to the low
+thousands where the other tier-3s sit — not a buried fit. They are also among the 8
+low-confidence labels; on the **held-out 52-label set** (those excluded) MISS = 0,
+FALSE = 0, and NDCG@10 = 1.000. No tier-5 is buried and no tier-≤1 reaches the top 50.
+
+**Phase 8–9 refinements.** Two validated, audit-driven additions lifted the held-out
+metrics without regressions: an **assessment-score corroboration** signal (Redrob skill
+assessments + endorsements corroborate or discount a claimed skill — the direct
+keyword-stuffer counter), and a **core-skill saturation** that stops a long listed skill
+set from out-weighing career evidence. Each was kept only after it improved Kendall τ
+with no NDCG@50 regression and no new FALSE; see `DECISIONS.md` #8–9 and the full leak
+audit in `eval/AUDIT.md`.
 
 Production-run facts (full 100K, this machine, CPU-only):
 
@@ -277,7 +301,9 @@ See `DECISIONS.md` for the full defense. In brief:
 
 - **Feature-based over embedding-first.** Every score decomposes into auditable
   reasons; honeypots collapse by construction. Embeddings are an optional add-on, to
-  be introduced only if validation shows real fits being missed (it did not).
+  be introduced only if validation shows real fits being missed (it did not — the
+  Phase-9 audit found 0 genuine fits lost to vocabulary across 692 strong-career
+  candidates; `eval/AUDIT.md` §2).
 - **Structure over prose.** Career-history *descriptions* in the data are partly
   shuffled noise, so role classification keys on title + industry; description text
   only adds corroboration, never drives a score down.

@@ -22,7 +22,12 @@ an impossible honeypot highly, which is a Stage-3 disqualifier. A feature scorer
 those failures structurally impossible and produces a defensible reason per candidate.
 Embeddings remain an *optional additive term* (Phase 7) to be added only if validation
 showed missed plain-language fits — it didn't, so we didn't add unjustified complexity
-(the "framework enthusiast" failure mode the JD warns about).
+(the "framework enthusiast" failure mode the JD warns about). The Phase-9 audit
+re-confirmed this with evidence: of 692 strong-career candidates ranked outside the top
+200, **none** were genuine fits lost to a vocabulary gap — every one was correctly
+down-weighted by a behavioural / seniority / location gate, a penalty, or a real lack of
+retrieval specialisation (`eval/AUDIT.md` §2). Career signal is title/industry-derived,
+not keyword-derived, so a plain-language fit scores high without lexical matching.
 
 ### 2. Multiplicative gates, not one additive sum
 
@@ -65,7 +70,7 @@ and that "a good ranking system should naturally avoid them" — hard-coding IDs
 fail the hidden test set and is exactly the brittle move the evaluation filters out.
 A ratio check generalizes to unseen honeypots and is itself an explainable feature. We
 verified it on the *final* top-100 (not just top-by-fit): 0 honeypots, while the
-top-by-fit set contained 2 the gate removed.
+top-by-fit set contained 3 the gate removed (quantified in `eval/TRAP_HANDLING.md` §2).
 
 ### 5. The tuning fix: saturate experience, gate the band
 

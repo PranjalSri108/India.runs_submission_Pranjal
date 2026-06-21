@@ -35,7 +35,6 @@ import sys
 import time
 
 from .features import extract_features
-from .honeypot import impossibility_score
 from .io_utils import iter_candidates
 from .reasoning import make_reasoning
 from .score import score
@@ -78,6 +77,8 @@ def honeypot_scan(top_rows):
 
 
 def write_submission(top_rows, out_path):
+    """Write the ranked rows to `out_path` as the 4-column submission CSV
+    (candidate_id, rank, score, reasoning), scores formatted to SCORE_DP dp."""
     with open(out_path, "w", newline="") as fh:
         w = csv.writer(fh)  # QUOTE_MINIMAL: quotes any field with , " or newline
         w.writerow(HEADER)
@@ -86,6 +87,8 @@ def write_submission(top_rows, out_path):
 
 
 def main(in_path=None, out_path=DEFAULT_OUT):
+    """Run the full pipeline (load → score → top-N → CSV), print run stats, and
+    return 0 — or 1 if any honeypot (impossibility ≤ 0.5) survived into the top-N."""
     t0 = time.time()
     top_rows, n_pool = rank_pool(in_path)
     t_score = time.time() - t0

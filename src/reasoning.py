@@ -126,7 +126,13 @@ def _gap(f):
         return "no clear evidence of having shipped a ranking/search/rec system"
     if not f["eval_signal"]:
         return "no explicit evaluation-framework signal (NDCG/MRR/A-B testing)"
-    return "skill durations are modest relative to a true 6-8 yr IR veteran"
+    return _pick(f["candidate_id"] + "|cav", [
+        "skill durations read modest for a true 6-8 yr IR veteran",
+        "the core-skill tenures sit a little light for the seniority",
+        "depth is more breadth-of-stack than years on one system",
+        "no hard gap — the softest signal is core-skill tenure depth",
+        "strong across the board; the only thing to probe is skill-duration depth",
+    ])
 
 
 def _connect(strength):
@@ -159,13 +165,73 @@ def _archetype(f):
     return "solid"
 
 
+_CAVEAT_INTROS = ["The only real caveat:", "The watch-item:", "Main reservation:",
+                  "One honest caveat:", "Where to probe:", "Worth checking:"]
+
+
 def _lead(cid, rank):
-    """Tone-setting opener that tracks rank."""
+    """Tone-setting opener that tracks rank WITHIN a curated list.
+
+    make_reasoning is only ever called on already-selected candidates (the top-100
+    submission, or the demo sample), so even the back half is a genuine fit. The
+    tone therefore grades *confidence*; it never turns dismissive on a deep field —
+    a glowing body under a "weak fit" lead would fail the spec's rank-consistency
+    check. Genuinely-not-a-fit candidates are handled by the negative archetypes
+    (stuffer/over_band/consulting/stale/junior/adjacent/impossible), not here.
+    """
     if rank is not None and rank <= 10:
-        return _pick(cid, ["A strong match", "A standout fit", "A top-tier fit"])
-    if rank is not None and rank <= 50:
-        return _pick(cid, ["A solid fit", "A credible fit", "A plausible fit"])
-    return _pick(cid, ["A marginal fit", "A stretch", "A weak fit"])
+        return _pick(cid + "|lead", ["A standout fit", "A top-tier match",
+                                     "A clear top-10 fit", "An exceptional match"])
+    if rank is not None and rank <= 30:
+        return _pick(cid + "|lead", ["A strong fit", "A strong match",
+                                     "A high-confidence fit", "A compelling match"])
+    if rank is not None and rank <= 60:
+        return _pick(cid + "|lead", ["A solid fit", "A credible fit",
+                                     "A dependable match", "A sound fit"])
+    return _pick(cid + "|lead", ["A measured fit", "A lower-but-genuine fit",
+                                 "A credible fit further down a deep field",
+                                 "A solid back-half fit"])
+
+
+def _jd_hook(f):
+    """A SPECIFIC JD requirement this candidate's evidence maps to (not generic
+    praise). Chosen from their actual matched core skills + eval signal, rotated
+    per-candidate so the connection reads distinctly across the list."""
+    cid = f["candidate_id"]
+    core = " ".join(n.lower() for n, _ in f.get("matched_core_skills", []))
+    hooks = []
+    if any(t in core for t in ("embedding", "faiss", "pinecone", "weaviate", "qdrant",
+                               "milvus", "pgvector", "vector", "sentence transformers",
+                               "e5", "bge")):
+        hooks.append("the JD's must-have of production embeddings-based retrieval")
+    if any(t in core for t in ("elasticsearch", "opensearch", "bm25")):
+        hooks.append("the JD's call for vector-DB / hybrid-search operations")
+    if any(t in core for t in ("learning to rank", "ranking", "recommendation")):
+        hooks.append("the JD's core mandate of ranking & recommendation systems")
+    if any(t in core for t in ("information retrieval", "retrieval", "nlp")):
+        hooks.append("the JD's retrieval/IR focus")
+    if f.get("eval_signal"):
+        hooks.append("the JD's hard requirement of rigorous ranking evaluation (NDCG/MRR/A-B)")
+    if not hooks:
+        hooks.append("the JD's ranking/search/recommendation mandate")
+    return _pick(cid + "|hook", hooks)
+
+
+def _shipped_eval_variant(f):
+    """Varied phrasing of the shipped-system / eval-framework evidence."""
+    cid = f["candidate_id"]
+    parts = []
+    if f["shipped_system"]:
+        parts.append(_pick(cid + "|ship", [
+            "has shipped a production ranking/search system",
+            "has taken an end-to-end ranking/search system to production",
+            "brings real shipped-system evidence in ranking/search"]))
+    if f["eval_signal"]:
+        parts.append(_pick(cid + "|ev", [
+            "and shows evaluation-framework signal (NDCG/MRR/A-B)",
+            "with explicit ranking-eval discipline (NDCG/MRR/A-B)",
+            "backed by an offline/online eval signal (NDCG/MRR/A-B)"]))
+    return " ".join(parts)
 
 
 def make_reasoning(f, rank=None):
@@ -191,14 +257,29 @@ def make_reasoning(f, rank=None):
 
     # Each archetype assembles its own structure / ordering.
     if arch == "ideal":
-        body = f"{lead} for the brief: {role}, with {ml}"
-        if skills:
-            body += f" and {skills}"
-        body += "."
-        if se:
-            body += f" {_cap(se)}."
-        body += f" {_cap(sig_phrase)}."
-        body += f" The only real caveat: {gap}."
+        hook = _jd_hook(f)
+        sev = _shipped_eval_variant(f)
+        intro = _pick(cid + "|intro", _CAVEAT_INTROS)
+        skel = _stable_hash(cid + "|skel") % 3
+        skills_cl = f" and {skills}" if skills else ""
+        if skel == 0:
+            # lead-first, JD hook after the evidence
+            body = f"{lead} for the brief: {role}, with {ml}{skills_cl}."
+            body += f" {_cap(sev)} — a direct match for {hook}." if sev else f" A direct match for {hook}."
+            body += f" {_cap(sig_phrase)}. {intro} {gap}."
+        elif skel == 1:
+            # JD-hook-first (opener verb varied so the hook doesn't always head identically)
+            opener = _pick(cid + "|op1", ["A direct fit for", "Squarely matches",
+                                          "Maps cleanly to", "A strong answer to",
+                                          "Lines up with"])
+            body = f"{opener} {hook}. {_cap(role)}, with {ml}{skills_cl}"
+            body += f"; {sev}." if sev else "."
+            body += f" {_cap(sig_phrase)}. {intro} {gap}."
+        else:
+            # evidence-first (skills lead)
+            body = f"{_cap(skills)} — {role}, {ml}." if skills else f"{_cap(role)} with {ml}."
+            body += f" {_cap(sev)}, matching {hook}." if sev else f" Matching {hook}."
+            body += f" {_cap(sig_phrase)}. {intro} {gap}."
 
     elif arch == "over_band":
         body = (f"Deep experience, but over the band: {role} with "
