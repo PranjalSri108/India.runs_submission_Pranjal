@@ -33,7 +33,7 @@ sys.path.insert(0, HERE)
 
 from src.features import extract_features  # noqa: E402
 from src.reasoning import _archetype, make_reasoning  # noqa: E402
-from src.score import WEIGHTS, _saturate_ml_years, fit_score, score  # noqa: E402
+from src.score import WEIGHTS, _saturate_core, _saturate_ml_years, fit_score, score  # noqa: E402
 
 SAMPLE_PATH = os.path.join(HERE, "data", "sample_candidates.json")
 SUBMISSION_PATH = os.path.join(HERE, "submission.csv")
@@ -94,6 +94,8 @@ def breakdown(f):
         v = f[key]
         if key == "applied_ml_years":
             num, raw = _saturate_ml_years(v), v
+        elif key == "core_skill_score":
+            num, raw = _saturate_core(v), v
         else:
             num = 1.0 if v is True else (0.0 if v is False else float(v))
             raw = v

@@ -19,6 +19,8 @@ regardless of fit.
 
 from __future__ import annotations
 
+import math
+
 # The fit weight vector — the single source of tunable truth. Keys are feature
 # names produced by features.extract_features. Boolean components (shipped_system,
 # eval_signal) are treated as 1.0/0.0. Values are deliberately round and
@@ -47,6 +49,18 @@ def _saturate_ml_years(x: float) -> float:
     return ML_YEARS_CAP + ML_YEARS_OVER_SLOPE * (x - ML_YEARS_CAP)
 
 
+# core_skill_score is a SUM over matched core skills with no cap, so it can grow into
+# the single largest fit term and reward *breadth* of a listed skill set over depth —
+# inverting the career-over-skills thesis (DECISIONS #9, eval/AUDIT.md §5). Saturate it
+# with diminishing returns (asymptote CORE_SKILL_SAT), mirroring the ML-years cap: the
+# first few genuine core skills earn near-full credit; extra listed skills add little.
+CORE_SKILL_SAT = 6.0
+
+
+def _saturate_core(x: float) -> float:
+    return CORE_SKILL_SAT * (1.0 - math.exp(-x / CORE_SKILL_SAT))
+
+
 def fit_score(f: dict) -> float:
     """Weighted sum of the positive fit components (pre-penalty, pre-gates)."""
     total = 0.0
@@ -54,6 +68,8 @@ def fit_score(f: dict) -> float:
         v = f[key]
         if key == "applied_ml_years":
             v = _saturate_ml_years(v)
+        elif key == "core_skill_score":
+            v = _saturate_core(v)
         total += w * (1.0 if v is True else (0.0 if v is False else v))
     return total
 

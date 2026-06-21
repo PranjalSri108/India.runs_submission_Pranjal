@@ -152,3 +152,34 @@ and never hurts"; it is the kind of signal whose value should grow on the full
 hidden set, where assessment coverage and stuffer density are higher than in our
 small proxy. The honeypot guarantee (0 impossible profiles in the final top-100)
 and byte-for-byte determinism are preserved.
+
+### 9. Saturate core_skill_score — thesis restoration (audit-driven)
+
+**Decision.** Pass `core_skill_score` through a diminishing-returns saturation
+(`core_eff = K·(1 − e^(−core/K))`, K=6) in `fit_score`, mirroring the existing
+`applied_ml_years` cap. No `WEIGHTS` value changed.
+
+**Alternative.** Leave it as an unbounded sum; or a hard cap.
+
+**Why.** The Phase-9 audit (`eval/AUDIT.md` §5) found a leak in the highest-weight
+region: `core_skill_score` is a *sum* over matched core skills with no cap, so it had
+grown into the single largest fit term — at the pre-change #1 it contributed 13.95 vs
+12.04 for `applied_ml_years`, and 40/100 of the top-100 had core>5. That inverts the
+core thesis (career structure over a listed skill set, DECISIONS #3) and rewards
+*breadth* of a keyword list over depth/shipping evidence — the exact failure the
+dataset is built to punish. Saturation restores the ordering: the first few genuine
+core skills earn near-full credit while extra listed skills add little, so a deep
+shipper is no longer edged out by a long skill list. A hard cap was rejected as it
+flattens legitimate differences just below the cap; soft saturation preserves them.
+
+**The honest result.** Validated on the hand-labeled set (52 labels, 8 low-confidence
+excluded). Incremental over the corroboration signal (#8), before → after:
+NDCG@10 1.0000 → 1.0000, NDCG@50 0.9980 → 0.9984, Kendall τ-b +0.7649 → +0.7685,
+FALSE 0 → 0, MISS 0 → 0 — both movable metrics improve, none regress. The top-10 set
+is unchanged (no genuine deep fit evicted; re-audited clean, still 0 missing ≥2 JD
+boxes), but re-ordered toward career: the candidate previously ranked #1 purely on a
+core=9.3 skill list moved to #3, behind stronger-career profiles. K=6 (gentler) was
+chosen over the marginally-better K=4 (τ +0.7703) to minimise departure from validated
+behaviour. Cumulatively across Phase-9 (#8 + #9), τ moved +0.7632 → +0.7685 and NDCG@50
+0.9975 → 0.9984. Honeypot=0 and byte-for-byte determinism preserved; submission.csv
+regenerated.
