@@ -27,10 +27,12 @@ github_repo: "TODO(you): https://github.com/USERNAME/REPO"   # must be reachable
 sandbox_link: "TODO(you): https://huggingface.co/spaces/USERNAME/redrob-ranker"  # host app.py (see README "Sandbox")
 
 # Single command that produces submission.csv from the candidates file.
-# No-arg form auto-resolves data/candidates.jsonl.gz OR .jsonl (gzip magic-byte
-# sniffing), so it works whether you keep the bundle's .gz or a decompressed file.
-# Writes ./submission.csv. Runs in ~14s on CPU.
-reproduce_command: "python -m src.rank"
+# The candidates path is a CLI argument (--candidates, or a bare positional),
+# never hardcoded; --out sets the destination. A plain data/candidates.jsonl
+# also works (gzip is detected by magic bytes, not extension). The no-arg form
+# `python -m src.rank` auto-resolves data/candidates.jsonl.gz then .jsonl.
+# Runs in ~12s on CPU, fully offline; output is byte-identical run to run.
+reproduce_command: "python -m src.rank --candidates data/candidates.jsonl.gz --out submission.csv"
 
 # ============================================================================
 # Compute environment (where THIS submission was produced)

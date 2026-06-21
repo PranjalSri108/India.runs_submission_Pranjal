@@ -17,11 +17,18 @@ exactly what the tie-break was computed against (no float-vs-display drift).
 CSV is written with the stdlib csv module (QUOTE_MINIMAL): reasoning strings hold
 commas and quotes, and the writer escapes them so the column count stays 4.
 
-Run:  python -m src.rank   (or scripts/run.sh, which also times + measures RAM)
+Run (single command; writes ./submission.csv):
+    python -m src.rank --candidates data/candidates.jsonl.gz --out submission.csv
+
+The candidates path is a CLI argument, never hardcoded. Equivalent forms:
+    python -m src.rank                         # auto-resolves data/candidates.jsonl[.gz]
+    python -m src.rank data/candidates.jsonl   # positional, same as --candidates
+(or scripts/run.sh, which also times + measures peak RAM and validates the output)
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import os
 import sys
@@ -102,5 +109,25 @@ def main(in_path=None, out_path=DEFAULT_OUT):
     return 0 if not flagged else 1
 
 
+def _parse_args(argv):
+    """CLI for the reproduce command. --candidates/--out match the spec example;
+    a bare positional and the no-arg auto-resolve are kept for convenience."""
+    p = argparse.ArgumentParser(
+        prog="python -m src.rank",
+        description="Score the candidate pool and write the top-100 submission CSV.")
+    p.add_argument("candidates_pos", nargs="?", default=None, metavar="CANDIDATES",
+                   help="optional positional path to candidates.jsonl[.gz]; "
+                        "same as --candidates")
+    p.add_argument("--candidates", dest="candidates", default=None,
+                   help="path to the candidate pool (jsonl or jsonl.gz). If omitted, "
+                        "auto-resolves data/candidates.jsonl.gz then "
+                        "data/candidates.jsonl via gzip magic-byte sniffing.")
+    p.add_argument("--out", dest="out", default=DEFAULT_OUT,
+                   help="output CSV path (default: ./submission.csv at repo root)")
+    args = p.parse_args(argv)
+    return (args.candidates or args.candidates_pos), args.out
+
+
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1] if len(sys.argv) > 1 else None))
+    in_path, out_path = _parse_args(sys.argv[1:])
+    sys.exit(main(in_path, out_path))

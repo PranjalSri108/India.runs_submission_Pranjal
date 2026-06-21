@@ -104,10 +104,12 @@ pip install -r requirements.txt          # core ranker needs no third-party libs
 #    the loader auto-detects gzip vs plain via magic bytes.
 
 # 3. produce the ranking  (single command; writes ./submission.csv)
-python -m src.rank
-#    auto-resolves data/candidates.jsonl.gz OR data/candidates.jsonl (gzip
-#    magic-byte sniffing), so it works on either the bundle .gz or a plain file.
-#    To point at an explicit path:  python -m src.rank path/to/candidates.jsonl[.gz]
+python -m src.rank --candidates data/candidates.jsonl.gz --out submission.csv
+#    The candidates path is a CLI argument (never hardcoded); --out sets the
+#    destination. A plain data/candidates.jsonl also works (gzip is detected by
+#    magic bytes, not extension). Equivalent shortcuts:
+#      python -m src.rank                          # auto-resolves data/candidates.jsonl.gz then .jsonl
+#      python -m src.rank data/candidates.jsonl    # positional, same as --candidates
 
 # 4. validate the submission format
 python validate_submission.py submission.csv      # -> "Submission is valid."
@@ -144,14 +146,51 @@ reimplementation) live on `data/sample_candidates.json`, and reads the committed
    mismatch; impossible skill duration collapsed by the impossibility gate).
 3. **Actual top-100** — the committed `submission.csv`, searchable.
 
+Run locally:
+
 ```bash
 pip install -r requirements-sandbox.txt
 streamlit run app.py
 ```
 
-Deploys as-is to HuggingFace Spaces / Streamlit Cloud (point the Space at this repo;
-entrypoint `app.py`). The breakdown numbers are computed from `src/score.py` itself,
-so they match the ranker exactly.
+### Deploying the sandbox (spec §10.5)
+
+The demo needs **only a pip requirements file** — the three pinned lines in
+`requirements-sandbox.txt` (`streamlit`, `altair`, `pandas`). No Dockerfile, system
+packages, model downloads, or environment variables. It pre-loads
+`data/sample_candidates.json` (50 profiles, ≤ 100), runs the **real `src/` ranker**
+end-to-end on CPU in well under a second (far inside the 5-minute budget), and reads
+the committed `submission.csv` for the actual top-100. Every path is resolved relative
+to the app file (`__file__`), so there are **no absolute paths** to fix.
+
+Files the deployed app needs — all committed: `app.py`, `src/`,
+`data/sample_candidates.json`, `submission.csv`, `.streamlit/config.toml`.
+
+**Streamlit Community Cloud**
+
+1. Push this repo to GitHub.
+2. Streamlit Cloud installs from `requirements.txt` at the repo root. That file is the
+   *lean ranker* set, so give the deploy the demo deps one of two ways: copy the three
+   lines from `requirements-sandbox.txt` into `requirements.txt`, **or** deploy from a
+   branch whose `requirements.txt` is those three lines. (The ranker imports only the
+   stdlib either way — see the import audit — so this only affects the demo build.)
+3. On [share.streamlit.io](https://share.streamlit.io) → **New app** → select the repo
+   and branch, set **Main file path** to `app.py`, and Deploy. The public URL it gives
+   you is your sandbox link.
+
+**HuggingFace Spaces** (the Space is its own git repo, so no branch juggling)
+
+1. Create a new Space → **SDK: Streamlit** → CPU basic (free tier is fine).
+2. Add to the Space: `app.py`, the `src/` folder, `data/sample_candidates.json`,
+   `submission.csv`, `.streamlit/config.toml`, and a `requirements.txt` containing the
+   three lines from `requirements-sandbox.txt`. (Upload via the web UI, or `git push`
+   to the Space's remote.)
+3. The Space auto-runs `streamlit run app.py`, building from that `requirements.txt`.
+   The Space URL is your sandbox link.
+
+Either path satisfies spec §10.5: a ≤100-candidate sample is pre-loaded, the ranking
+runs end-to-end, and it completes far inside the 5-minute CPU budget. The breakdown
+numbers are computed from `src/score.py` itself, so they match the ranker exactly.
 
 ## Submitting
 
