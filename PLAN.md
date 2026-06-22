@@ -1,4 +1,4 @@
-# Redrob Ranker — Build Plan & Methodology
+# Redrob Ranker - Build Plan & Methodology
 
 A feature-based, fully-explainable ranking system for the Intelligent Candidate
 Discovery & Ranking Challenge. This document is the spec we build against. It is
@@ -43,12 +43,12 @@ redrob-ranker/
 ├── requirements.txt         # pin versions; keep minimal
 ├── .gitignore               # ignore the big .gz, __pycache__, .venv
 ├── data/
-│   ├── candidates.jsonl.gz  # the 100K pool (gitignored — too big for git)
+│   ├── candidates.jsonl.gz  # the 100K pool (gitignored - too big for git)
 │   └── sample_candidates.json
 ├── src/
 │   ├── __init__.py
 │   ├── io_utils.py          # streaming loader for the gz file
-│   ├── vocab.py             # ALL keyword/skill/firm vocabularies — auditable
+│   ├── vocab.py             # ALL keyword/skill/firm vocabularies - auditable
 │   ├── classify.py          # role -> (ml_weight, is_product)
 │   ├── honeypot.py          # impossibility_score(candidate) -> [0,1]
 │   ├── features.py          # extract_features(candidate) -> dict
@@ -77,55 +77,55 @@ tuning never means hunting through logic.
 
 ## 2. Build sequence (phases with checkpoints)
 
-Build in this order. **Commit after every phase** — Stage 4 checks git history for
+Build in this order. **Commit after every phase** - Stage 4 checks git history for
 real iteration. Do not squash into one dump commit.
 
-### Phase 0 — Scaffold & data access
+### Phase 0 - Scaffold & data access
 - Create repo, venv, `requirements.txt`, `.gitignore`.
 - `io_utils.py`: stream the gz file lazily (`gzip.open` + generator) so we never
   hold 465 MB of parsed objects unless needed. Provide `load_all()` and
   `iter_candidates()`.
 - **Checkpoint:** `python -c "from src.io_utils import load_all; print(len(load_all()))"` → 100000.
 
-### Phase 1 — Vocabulary, classification, honeypot
+### Phase 1 - Vocabulary, classification, honeypot
 - `vocab.py`: move every keyword list from the prototype here. Document *why* each
   term is in each list (defensibility).
 - `classify.py`: `classify_role(job) -> (ml_weight in [0,1], is_product: bool)`.
-  Title + industry are trusted; description only adds corroboration (it's noisy —
+  Title + industry are trusted; description only adds corroboration (it's noisy -
   see §4).
 - `honeypot.py`: `impossibility_score(candidate) -> [0,1]`. Checks: skill duration
   > total experience; job tenure > total experience; advanced/expert skill with
   <6 months; career-month sum wildly > plausible.
-- **Checkpoint:** `tests/test_honeypot.py` — the 5 known sample honeypots
+- **Checkpoint:** `tests/test_honeypot.py` - the 5 known sample honeypots
   (CAND_0000003, _0000011, _0000012, _0000013, _0000022) all score ≤ 0.5.
 
-### Phase 2 — Features & scoring
+### Phase 2 - Features & scoring
 - `features.py`: `extract_features(candidate) -> dict` (start from the prototype).
 - `score.py`: holds the weight vector and `score(features) -> float`. Keep weights
   as a named dict/dataclass so tuning is one edit.
 - **Checkpoint:** on the sample, CAND_0000031 ranks #1; CAND_0000021 (keyword
   stuffer) is outside the top 10; no honeypot in the top 10.
 
-### Phase 3 — Validation harness (NO ground truth — this is the crux)
+### Phase 3 - Validation harness (NO ground truth - this is the crux)
 We cannot tune against the hidden truth, and we get 3 submissions. So we build our
 own validation set.
 - `sample_for_labeling.py`: from the full 100K, draw a **stratified** sample (~60):
   pull the ranker's current top ~30, plus ~15 mid-scoring, plus ~15 random. This
   surfaces both "did we rank junk highly" and "did we miss anyone".
-- Hand-label each into a relevance tier 0–5 using the JD rubric (write the rubric
+- Hand-label each into a relevance tier 0-5 using the JD rubric (write the rubric
   into `eval/RUBRIC.md`). Save to `labels.csv`.
 - `validate_ranker.py`: compute NDCG@10/@50 and Kendall-tau of the ranker's order
   vs your labels. This is your offline proxy for the real metric.
 - **Checkpoint:** a reproducible number you can improve. Record it in README.
 
-### Phase 4 — Tuning
+### Phase 4 - Tuning
 - Adjust weights in `score.py` to maximize agreement with `labels.csv`.
 - Resist overfitting to 60 labels: prefer round, defensible weights; change a weight
   only if you can articulate *why* in JD terms.
 - **Checkpoint:** validation NDCG improves and the top-10 contains zero obvious
   mis-ranks on manual inspection.
 
-### Phase 5 — Reasoning generation
+### Phase 5 - Reasoning generation
 - `reasoning.py`: `make_reasoning(features) -> str`. Build sentences from the actual
   feature values: years, current title, named matched skills, the strongest signal,
   AND the biggest gap/concern. Vary structure by which features dominate so the 10
@@ -133,23 +133,23 @@ own validation set.
 - **Checkpoint:** `tests/` asserts every reasoning string references ≥2 concrete
   profile facts and that 10 random reasonings are not string-identical.
 
-### Phase 6 — Pipeline, format, timing
-- `rank.py`: load → score all 100K → sort → take top 100 → assign ranks 1–100 →
+### Phase 6 - Pipeline, format, timing
+- `rank.py`: load → score all 100K → sort → take top 100 → assign ranks 1-100 →
   ensure scores are strictly non-increasing (break ties by candidate_id ascending,
   matching the validator) → write `submission.csv` with the reasoning column.
 - `scripts/run.sh`: times the whole run; must be < 5 min on 16 GB CPU.
-- Run the provided `validate_submission.py` — must print "Submission is valid."
+- Run the provided `validate_submission.py` - must print "Submission is valid."
 - **Checkpoint:** valid CSV produced in < 5 min, peak RAM < 16 GB.
 
-### Phase 7 — (Optional) embedding layer, ONLY if Phase 3 shows a gap
+### Phase 7 - (Optional) embedding layer, ONLY if Phase 3 shows a gap
 - If hand-labeling reveals real fits the vocabulary missed (plain-language Tier 5s),
   add a local sentence-embedding similarity feature (e.g. `bge-small`, CPU, cached)
   as ONE additional term in `fit`. Load the model once; embed JD once; batch-embed
   candidate summaries. Keep it as an additive signal, never the whole score.
-- **Decision rule:** add it only if it raises validation NDCG. Otherwise skip —
+- **Decision rule:** add it only if it raises validation NDCG. Otherwise skip -
   unjustified complexity is the "framework enthusiast" failure mode the JD warns of.
 
-### Phase 8 — Repo polish & submission assets
+### Phase 8 - Repo polish & submission assets
 - `README.md`: one-paragraph approach, how to run, validation numbers, honest
   limitations.
 - Methodology summary (≤200 words) for the portal.
@@ -201,7 +201,7 @@ def main(in_path, out_path): ...                           # produces submission
 
 3. **Multiplicative composition for gates.** Behavior, location, and impossibility
    are multipliers. A perfect-on-paper but unavailable or impossible candidate
-   collapses regardless of fit — matching the JD's "not actually available → down-
+   collapses regardless of fit - matching the JD's "not actually available → down-
    weight" instruction and the honeypot requirement.
 
 4. **Anti-stuffing in skills.** Skill credit is capped at the candidate's actual
@@ -219,10 +219,10 @@ def main(in_path, out_path): ...                           # produces submission
 ## 5. Compute budget
 
 - 100K candidates, pure-Python dict feature scoring: expect well under 60s. No GPU,
-  no network — satisfied trivially since nothing calls out.
+  no network - satisfied trivially since nothing calls out.
 - If Phase 7 embeddings are added: embed 100K short summaries on CPU. Batch and time
   it; if it threatens the 5-min budget, pre-filter with the cheap feature score to
-  the top ~5–10K before embedding (funnel). Cache embeddings to disk (< 5 GB).
+  the top ~5-10K before embedding (funnel). Cache embeddings to disk (< 5 GB).
 - Always run `scripts/run.sh` and read the wall-clock before submitting.
 
 ---
@@ -231,7 +231,7 @@ def main(in_path, out_path): ...                           # produces submission
 
 - Real commits per phase with honest messages ("add honeypot impossibility checks",
   "tune fit weights against validation set v2").
-- Keep the `eval/labels.csv` and `eval/RUBRIC.md` in the repo — they are the
+- Keep the `eval/labels.csv` and `eval/RUBRIC.md` in the repo - they are the
   evidence of genuine engineering.
 - Don't commit the 465 MB data; `.gitignore` it and document where to get it.
 
@@ -240,7 +240,7 @@ def main(in_path, out_path): ...                           # produces submission
 ## 7. Pre-submission checklist
 
 - [ ] Exactly 100 data rows, header `candidate_id,rank,score,reasoning`.
-- [ ] Ranks 1–100 each once; scores non-increasing; ties broken by candidate_id asc.
+- [ ] Ranks 1-100 each once; scores non-increasing; ties broken by candidate_id asc.
 - [ ] All candidate_ids exist in the pool; no duplicates; format `CAND_XXXXXXX`.
 - [ ] Scores differentiated (not all equal).
 - [ ] No honeypot in top 100 (manually eyeball the top 100 for impossible profiles).

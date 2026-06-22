@@ -1,5 +1,5 @@
 """
-rank.py — End-to-end orchestrator: pool -> scores -> top 100 -> submission.csv.
+rank.py - End-to-end orchestrator: pool -> scores -> top 100 -> submission.csv.
 
 Phase 6 of PLAN.md. This is the deliverable pipeline:
 
@@ -65,7 +65,7 @@ def rank_pool(in_path=None):
 def honeypot_scan(top_rows):
     """Stage-3 literal check: impossible profiles (<=0.5) in the FINAL top-N.
 
-    This is a different set than 'top-N by fit' — gates can pull a high-fit
+    This is a different set than 'top-N by fit' - gates can pull a high-fit
     honeypot down or leave it up, so we scan the actually-submitted rows.
     """
     flagged = []
@@ -87,8 +87,8 @@ def write_submission(top_rows, out_path):
 
 
 def main(in_path=None, out_path=DEFAULT_OUT):
-    """Run the full pipeline (load → score → top-N → CSV), print run stats, and
-    return 0 — or 1 if any honeypot (impossibility ≤ 0.5) survived into the top-N."""
+    """Run the full pipeline (load -> score -> top-N -> CSV), print run stats, and
+    return 0 - or 1 if any honeypot (impossibility <= 0.5) survived into the top-N."""
     t0 = time.time()
     top_rows, n_pool = rank_pool(in_path)
     t_score = time.time() - t0

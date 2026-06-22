@@ -1,12 +1,12 @@
 """
-vocab.py — Every keyword / skill / firm vocabulary, in one auditable place.
+vocab.py - Every keyword / skill / firm vocabulary, in one auditable place.
 
 Why this file exists
 --------------------
 The competition is adversarially built to punish opaque keyword/embedding
 matching. Our defense is the opposite: *explicit, defensible* vocabularies that
 a reviewer can read, challenge, and verify against the JD. Each list below
-records WHY its terms belong — that justification is the Stage 5 answer to
+records WHY its terms belong - that justification is the Stage 5 answer to
 "why did you weight this term?".
 
 These lists are extracted verbatim from the validated prototype (src/features.py)
@@ -23,7 +23,7 @@ from __future__ import annotations
 # Titles that indicate genuine ML/AI/IR/search/ranking work. These map directly
 # to the JD's core: information retrieval, ranking, recommendation, NLP. A title
 # match is the strongest *structured* signal of real ML work (descriptions are
-# noisy — see classify.py), so these earn full ml_weight.
+# noisy - see classify.py), so these earn full ml_weight.
 ML_TITLE_TERMS = [
     "machine learning", "ml engineer", "applied ml", "applied scientist",
     "data scientist", "research scientist", "ai engineer", "ai/ml",
@@ -33,7 +33,7 @@ ML_TITLE_TERMS = [
 
 # Engineering-adjacent roles that count PARTIALLY toward fit. A backend/data
 # engineer who built feature pipelines is materially closer to this job than a
-# project manager, but is not an ML hire on title alone — hence partial credit.
+# project manager, but is not an ML hire on title alone - hence partial credit.
 ADJACENT_TITLE_TERMS = [
     "data engineer", "backend engineer", "software engineer", "platform engineer",
     "full stack", "fullstack", "mlops", "research engineer",
@@ -41,7 +41,7 @@ ADJACENT_TITLE_TERMS = [
 
 # --- Description-corroboration vocabularies ----------------------------------
 
-# Phrases that corroborate "shipped a ranking/search/recsys system" — the single
+# Phrases that corroborate "shipped a ranking/search/recsys system" - the single
 # headline thing the JD asks for. Descriptions are partly shuffled noise, so
 # these only ADD corroboration on top of a title/industry signal; they never
 # drive the score down on their own.
@@ -54,7 +54,7 @@ SHIPPED_SYSTEM_PHRASES = [
 ]
 
 # Evaluation-framework signals. The JD lists rigorous offline/online evaluation
-# (NDCG, MRR, MAP, A/B testing) as a hard requirement — someone who names these
+# (NDCG, MRR, MAP, A/B testing) as a hard requirement - someone who names these
 # has actually measured ranking quality, not just trained a model.
 EVAL_PHRASES = [
     "ndcg", "mrr", "map ", "a/b test", "ab test", "offline eval",
@@ -83,7 +83,7 @@ NICE_SKILL_TERMS = [
 # --- Company / industry vocabularies -----------------------------------------
 
 # Indian IT-services / consulting firms. The JD explicitly does NOT want the
-# "consulting-only" career — staff-augmentation work at these shops is rarely
+# "consulting-only" career - staff-augmentation work at these shops is rarely
 # product ML ownership. Membership here marks a role as services, not product.
 # (Substring-matched against company name, so "tata consultancy" catches "Tata
 # Consultancy Services".)
@@ -94,7 +94,7 @@ CONSULTING_FIRMS = {
 
 # Industries that read as services rather than product. Used (with the firm set
 # above) to decide is_product, which gates whether ML months count as
-# "applied ML at a product company" — the JD's between-the-lines preference.
+# "applied ML at a product company" - the JD's between-the-lines preference.
 SERVICES_INDUSTRIES = {"it services", "consulting", "staffing", "outsourcing"}
 
 # --- Location vocabulary -----------------------------------------------------

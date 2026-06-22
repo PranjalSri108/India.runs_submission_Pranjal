@@ -1,11 +1,11 @@
 """
-test_reasoning.py — Phase 5 guards for the grounded reasoning generator.
+test_reasoning.py - Phase 5 guards for the grounded reasoning generator.
 
 Two properties we actually care about:
   1. Grounding: every generated reasoning references >= 2 real fields from the
      candidate record (current title/company, a named matched skill, the yoe
      figure). This is the anti-hallucination / "cite concrete facts" guarantee.
-  2. Variety: reasonings are not one fill-in-the-blanks skeleton — a sample of
+  2. Variety: reasonings are not one fill-in-the-blanks skeleton - a sample of
      top-100 candidates produces distinct strings.
 
 We run against the sample dataset (committed) so the test is hermetic and fast.
@@ -91,7 +91,7 @@ def test_reasonings_are_varied():
 
 
 def test_always_has_a_caveat():
-    """A reasoning with no caveat is a red flag — every one names a gap."""
+    """A reasoning with no caveat is a red flag - every one names a gap."""
     cands = _candidates()
     markers = ("caveat", "gap", "but", "though", "stretch", "risk",
                "no clear", "no explicit", "no substantial", "weak", "early-career")

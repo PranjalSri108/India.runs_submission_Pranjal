@@ -1,5 +1,5 @@
 """
-score.py — Compose feature components into the final, explainable score.
+score.py - Compose feature components into the final, explainable score.
 
 This module holds the ONE tunable knob: `WEIGHTS`. Phases 3-4 tune these against
 the hand-labeled validation set; until then they are exactly the values the
@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import math
 
-# The fit weight vector — the single source of tunable truth. Keys are feature
+# The fit weight vector - the single source of tunable truth. Keys are feature
 # names produced by features.extract_features. Boolean components (shipped_system,
 # eval_signal) are treated as 1.0/0.0. Values are deliberately round and
 # defensible; each maps to a JD requirement (see PLAN section 0).
@@ -50,7 +50,7 @@ def _saturate_ml_years(x: float) -> float:
 
 
 # core_skill_score is a SUM over matched core skills with no cap, so it can grow into
-# the single largest fit term and reward *breadth* of a listed skill set over depth —
+# the single largest fit term and reward *breadth* of a listed skill set over depth -
 # inverting the career-over-skills thesis (DECISIONS #9, eval/AUDIT.md §5). Saturate it
 # with diminishing returns (asymptote CORE_SKILL_SAT), mirroring the ML-years cap: the
 # first few genuine core skills earn near-full credit; extra listed skills add little.

@@ -1,4 +1,4 @@
-# Data pool — too big for git (~465 MB). See README for how to obtain it.
+# Data pool - too big for git (~465 MB). See README for how to obtain it.
 data/candidates.jsonl
 data/candidates.jsonl.gz
 
@@ -13,6 +13,13 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+*.swp
+.ipynb_checkpoints/
+
+# Scratch / logs
+*.log
+*.tmp
+scratch/
 
 # Local agent config
 .claude/

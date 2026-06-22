@@ -1,5 +1,5 @@
 """
-reasoning.py — Generate a candidate's explanation from its real feature values.
+reasoning.py - Generate a candidate's explanation from its real feature values.
 
 Phase 5 of PLAN.md. The whole thesis of this ranker is explainability, so the
 reasoning must be GROUNDED, not a template: every sentence is built from the
@@ -9,13 +9,13 @@ references a skill, employer, or fact that isn't in the record.
 What every reasoning does:
   - cites >= 2 concrete facts (applied-ML years, current title/company, named
     matched skills, the strongest behavioral signal);
-  - connects to the brief (a ranking/search/rec Senior AI Engineer role) — why
+  - connects to the brief (a ranking/search/rec Senior AI Engineer role) - why
     they fit, or for lower ranks why they're a stretch;
   - names the single biggest gap honestly (over-band, padded skills, junior,
     consulting-heavy, weak availability). A reasoning with no caveat is a tell.
 
 Structure VARIES by what dominates the candidate, so a deep-IR ideal fit reads
-differently from an available-but-junior one — it is not one fill-in skeleton.
+differently from an available-but-junior one - it is not one fill-in skeleton.
 Tone tracks rank: top-10 confident, mid-pack measured, deep cautious.
 """
 
@@ -84,7 +84,7 @@ def _behavior(f):
     la = _parse_date(sig.get("last_active_date"))
     idle = (TODAY - la).days if la else None
 
-    # negatives first — availability problems are decision-relevant
+    # negatives first - availability problems are decision-relevant
     if not open_to_work:
         return ("not currently marked open-to-work", False)
     if idle is not None and idle > 180:
@@ -170,14 +170,12 @@ _CAVEAT_INTROS = ["The only real caveat:", "The watch-item:", "Main reservation:
 
 
 def _lead(cid, rank):
-    """Tone-setting opener that tracks rank WITHIN a curated list.
+    """Tone-setting opener, graded by rank within a curated list.
 
-    make_reasoning is only ever called on already-selected candidates (the top-100
-    submission, or the demo sample), so even the back half is a genuine fit. The
-    tone therefore grades *confidence*; it never turns dismissive on a deep field —
-    a glowing body under a "weak fit" lead would fail the spec's rank-consistency
-    check. Genuinely-not-a-fit candidates are handled by the negative archetypes
-    (stuffer/over_band/consulting/stale/junior/adjacent/impossible), not here.
+    Why there is no "weak fit" tier: make_reasoning only runs on already-selected
+    candidates (top-100 submission or demo sample), so even the back half is a genuine
+    fit, and a glowing body under a dismissive lead would fail the spec's rank-
+    consistency check. Genuinely weak profiles use the negative archetypes, not this.
     """
     if rank is not None and rank <= 10:
         return _pick(cid + "|lead", ["A standout fit", "A top-tier match",

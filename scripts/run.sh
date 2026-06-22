@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run.sh — end-to-end Redrob Ranker run with wall-clock + peak-RAM reporting.
+# run.sh - end-to-end Redrob Ranker run with wall-clock + peak-RAM reporting.
 #
 # Phase 6 checkpoint: must finish in < 5 min and stay < 16 GB on a CPU box.
 # Produces submission.csv, then runs the format validator.
@@ -18,7 +18,7 @@ export PYTHONHASHSEED=0
 TIMEFILE="$(mktemp)"
 trap 'rm -f "$TIMEFILE"' EXIT
 
-echo "=== Redrob Ranker — end-to-end run ==="
+echo "=== Redrob Ranker - end-to-end run ==="
 echo "python: $PYBIN"
 echo
 

@@ -1,15 +1,15 @@
 """
-app.py — Redrob Ranker explainability demo (Streamlit sandbox).
+app.py - Redrob Ranker explainability demo (Streamlit sandbox).
 
-Design brief: make a skeptical reviewer conclude, in under a minute, two things —
-(1) the ranking is correct, and (2) every score is auditable, term by term — which
+Design brief: make a skeptical reviewer conclude, in under a minute, two things -
+(1) the ranking is correct, and (2) every score is auditable, term by term - which
 is our whole thesis over black-box similarity.
 
 It runs the REAL src/ pipeline (never a re-implementation): live on
 data/sample_candidates.json for interactivity, and reads the committed
 submission.csv for the actual top-100 deliverable. No ranker logic lives here.
 
-Visual identity: native Streamlit theme — clean, intentional layout built purely
+Visual identity: native Streamlit theme - clean, intentional layout built purely
 from native components (st.metric, st.tabs, bordered st.container, st.expander,
 st.columns) with no custom CSS, colors, or web fonts.
 
@@ -42,7 +42,7 @@ FIT_LABELS = {
     "applied_ml_years": "Applied-ML years @ product cos",
     "core_skill_score": "Core IR / ranking skills",
     "nice_skill_score": "Supporting ML skills",
-    "band_fit": "Seniority-band fit (5–9)",
+    "band_fit": "Seniority-band fit (5-9)",
     "product_ratio": "Product- vs services-career",
     "shipped_system": "Shipped a ranking/search system",
     "eval_signal": "Eval framework (NDCG/MRR/A-B)",
@@ -154,7 +154,7 @@ def gate_chart(bd):
         tooltip=[alt.Tooltip("step:N", title="step"),
                  alt.Tooltip("value:Q", title="running score", format=".2f")],
     )
-    bars = enc.mark_bar(color=GATE_NEUTRAL)  # gates kept neutral — see brief
+    bars = enc.mark_bar(color=GATE_NEUTRAL)  # gates kept neutral - see brief
     val = enc.mark_text(align="left", dx=4, baseline="middle").encode(
         text=alt.Text("value:Q", format=".2f"))
     return (bars + val).properties(height=max(160, 36 * len(rows)))
@@ -204,7 +204,7 @@ def signals_df(c):
     p = c["profile"]
     return pd.DataFrame([
         {"signal": "open to work", "value": "yes" if s.get("open_to_work_flag") else "no"},
-        {"signal": "last active", "value": s.get("last_active_date", "—")},
+        {"signal": "last active", "value": s.get("last_active_date", "-")},
         {"signal": "response rate", "value": f'{s.get("recruiter_response_rate", 0):.0%}'},
         {"signal": "relocate", "value": "yes" if s.get("willing_to_relocate") else "no"},
         {"signal": "location", "value": f'{p.get("location")}, {p.get("country")}'},
@@ -228,10 +228,10 @@ def detail_panel(item):
             st.metric("Final score", f'{bd["final"]:.2f}')
         st.markdown(f'> {make_reasoning(f, rank=rank)}')
 
-    st.markdown("**1 · How fit was built** — additive, weighted")
+    st.markdown("**1 · How fit was built** - additive, weighted")
     st.altair_chart(fit_chart(bd), use_container_width=True)
 
-    st.markdown("**2 · Gates applied** — multiplicative")
+    st.markdown("**2 · Gates applied** - multiplicative")
     st.altair_chart(gate_chart(bd), use_container_width=True)
     st.code(equation_text(bd))
 
@@ -267,7 +267,7 @@ def view_ranked(ranked):
     filt = [it for it in ranked if lo <= it["score"] <= hi][:topn]
     left, right = st.columns([5, 7], gap="medium")
     with left:
-        st.markdown("**Ranked candidates** — select one to audit")
+        st.markdown("**Ranked candidates** - select one to audit")
         if not filt:
             st.info("No candidates match this score range. Widen it to see results.")
             return
@@ -297,7 +297,7 @@ def view_traps(ranked):
     by_id = {it["cand"]["candidate_id"]: it for it in ranked}
     fit, stuf, hp = by_id[TRAP_IDS["fit"]], by_id[TRAP_IDS["stuffer"]], by_id[TRAP_IDS["honeypot"]]
 
-    st.subheader("The traps the pool is built around — and what the ranker does",
+    st.subheader("The traps the pool is built around - and what the ranker does",
                  anchor=False)
     st.altair_chart(score_chart([
         {"name": "Genuine fit", "score": fit["score"], "kind": "good"},
@@ -312,32 +312,32 @@ def view_traps(ranked):
                   "ranking system, available. Earns it on evidence.", True)
     with c2:
         trap_card(stuf, "Keyword stuffer · ranked low",
-                  "Career is Project Manager / Sales / Support — yet the skills list "
+                  "Career is Project Manager / Sales / Support - yet the skills list "
                   "shows Pinecone, FAISS, Embeddings. applied-ML = 0, so fit ≈ 0.", False)
     with c3:
         trap_card(hp, "Honeypot · collapsed by gate",
-                  "“Kubeflow” listed for 59 months on a 24-month career — internally "
+                  "“Kubeflow” listed for 59 months on a 24-month career - internally "
                   "impossible. The impossibility gate multiplies the score to near zero.", False)
 
-    st.subheader("Why — the receipts", anchor=False)
+    st.subheader("Why - the receipts", anchor=False)
     a, b = st.columns(2, gap="large")
     with a:
-        st.markdown("**Keyword stuffer — skills listed vs. career**")
+        st.markdown("**Keyword stuffer - skills listed vs. career**")
         st.dataframe(skills_df(stuf["cand"], limit=8), hide_index=True, use_container_width=True)
         st.dataframe(career_df(stuf["cand"]), hide_index=True, use_container_width=True)
         st.code(equation_text(breakdown(stuf["f"])))
     with b:
-        st.markdown("**Honeypot — the impossible duration**")
+        st.markdown("**Honeypot - the impossible duration**")
         st.dataframe(skills_df(hp["cand"], limit=8), hide_index=True, use_container_width=True)
         yexp = hp["cand"]["profile"].get("years_of_experience", 0)
-        st.caption(f'Total experience: {yexp} yrs (~{int(yexp * 12)} months) — '
+        st.caption(f'Total experience: {yexp} yrs (~{int(yexp * 12)} months) - '
                    f'yet a skill above is listed for longer.')
         st.code(equation_text(breakdown(hp["f"])))
 
 
 def view_top100():
     sub = load_submission()
-    st.subheader("The committed deliverable — submission.csv (full 100K pool)",
+    st.subheader("The committed deliverable - submission.csv (full 100K pool)",
                  anchor=False)
     if not sub:
         st.info("submission.csv not found. Run `python -m src.rank` to produce it.")
@@ -348,7 +348,7 @@ def view_top100():
     df = pd.DataFrame([{"rank": int(r["rank"]), "candidate_id": r["candidate_id"],
                         "score": float(r["score"]), "reasoning": r["reasoning"]} for r in rows])
     st.caption("These are full-pool candidates, so the live per-term audit isn't shown here "
-               "(their records aren't in the sandbox) — the reasoning embeds the cited facts.")
+               "(their records aren't in the sandbox) - the reasoning embeds the cited facts.")
     st.dataframe(df, hide_index=True, use_container_width=True, height=560,
                  column_config={
                      "rank": st.column_config.NumberColumn("#", width="small"),
@@ -359,12 +359,12 @@ def view_top100():
 
 # ---------- app -------------------------------------------------------------
 def main():
-    st.set_page_config(page_title="Redrob Ranker — explainable ranking",
+    st.set_page_config(page_title="Redrob Ranker - explainable ranking",
                        layout="wide", initial_sidebar_state="collapsed")
 
     st.title("Redrob Ranker")
     st.caption("INTELLIGENT CANDIDATE DISCOVERY & RANKING")
-    st.markdown("**Score what someone built, not what they listed** — "
+    st.markdown("**Score what someone built, not what they listed** - "
                 "every number below traces to a fact in the profile.")
     st.divider()
 

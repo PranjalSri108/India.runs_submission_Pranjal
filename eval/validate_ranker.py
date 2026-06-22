@@ -1,5 +1,5 @@
 """
-validate_ranker.py — Offline agreement of the ranker vs your hand labels.
+validate_ranker.py - Offline agreement of the ranker vs your hand labels.
 
 Phase 3 of PLAN.md. This is our proxy for the hidden competition metric, used to
 tune weights (Phase 4) without burning submissions.
@@ -7,12 +7,12 @@ tune weights (Phase 4) without burning submissions.
 It re-scores the FULL 100K pool with the *current* src/score.py weights (so the
 numbers move when you tune), then for the hand-labeled candidates reports:
 
-  - NDCG@10 and NDCG@50  — over the judged pool, i.e. the labeled candidates
+  - NDCG@10 and NDCG@50  - over the judged pool, i.e. the labeled candidates
     ordered by the current ranker score. (We only label ~60 candidates, not the
     whole top-50, so NDCG here is the standard judged-pool proxy: "did the ranker
     put the highest-tier labeled candidates at the top of its order." Gain is the
     exponential 2^tier - 1.)
-  - Kendall tau-b  — rank correlation between ranker score and your overall_tier
+  - Kendall tau-b  - rank correlation between ranker score and your overall_tier
     (tau-b handles the many tier ties). Positive = agreement.
   - A per-candidate table (ranker rank vs your tier) with disagreements flagged,
     so mis-rankings are eye-visible.
@@ -106,7 +106,7 @@ def main(labels_path):
         return
     labels = load_labels(labels_path)
     if not labels:
-        print(f"{labels_path} has no filled overall_tier values yet — nothing to score.")
+        print(f"{labels_path} has no filled overall_tier values yet - nothing to score.")
         print("Fill the overall_tier column per RUBRIC.md, then re-run.")
         return
 

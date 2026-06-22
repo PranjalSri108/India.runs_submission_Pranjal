@@ -1,5 +1,5 @@
 """
-honeypot.py — Impossibility gate: honeypot detection via internal contradiction.
+honeypot.py - Impossibility gate: honeypot detection via internal contradiction.
 
 The pool contains ~80 honeypots: profiles engineered to look attractive to a
 keyword/embedding ranker but that are internally *impossible*. We never
@@ -11,10 +11,10 @@ good it looks on paper.
 `impossibility_score` returns a multiplier in [0,1]: 1.0 = fully plausible,
 ->0.0 = internally impossible.
 
-Design note — ratio, not additive slack (tuned on the full 100K pool)
+Design note - ratio, not additive slack (tuned on the full 100K pool)
 --------------------------------------------------------------------
 The validated prototype's Check A flagged any skill whose duration exceeded
-`yoe*12 + 18` months. On the full pool that fired on 5,429 candidates (5.4%) —
+`yoe*12 + 18` months. On the full pool that fired on 5,429 candidates (5.4%) -
 mostly senior people merely a few months over, because a skill can legitimately
 be *used* longer than one's *professional* tenure (school, side projects). The
 real honeypot signature is scale-relative: the known honeypots each claim a

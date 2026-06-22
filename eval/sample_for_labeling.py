@@ -1,5 +1,5 @@
 """
-sample_for_labeling.py — Draw a stratified ~60-candidate sample to hand-label.
+sample_for_labeling.py - Draw a stratified ~60-candidate sample to hand-label.
 
 Phase 3 of PLAN.md. We have no ground truth and only 3 real submissions, so we
 build our own validation set: a small stratified sample, hand-labeled against
@@ -7,7 +7,7 @@ eval/RUBRIC.md, used to tune weights (Phase 4) without burning submissions.
 
 The make-or-break concern is labeling UX: opening raw JSON for 60 candidates
 guarantees burnout. So every row carries a compact, human-readable DIGEST
-(profile / career / skills / signals) — you should be able to label a row in
+(profile / career / skills / signals) - you should be able to label a row in
 ~90 seconds without ever touching the JSON.
 
 Strata (~60 total):
@@ -22,7 +22,7 @@ Anti-bias measures:
     cannot telegraph the ranker's opinion (esp. the stuffer stratum).
   - Sampling is seeded, so the emitted to_label.csv is reproducible.
 
-Output: eval/to_label.csv — fill in overall_tier/fit_tier/avail/deciding_factor
+Output: eval/to_label.csv - fill in overall_tier/fit_tier/avail/deciding_factor
 per RUBRIC.md, then save as eval/labels.csv for validate_ranker.py.
 """
 

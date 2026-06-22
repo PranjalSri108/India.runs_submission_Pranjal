@@ -1,5 +1,5 @@
 """
-features.py — Turn one raw candidate record into interpretable, JD-grounded features.
+features.py - Turn one raw candidate record into interpretable, JD-grounded features.
 
 Design philosophy
 -----------------
@@ -8,15 +8,15 @@ Every feature here is something you could SAY OUT LOUD in the Stage 5 interview:
 roles at product companies." We deliberately avoid opaque signals.
 
 Three buckets of features, mapping to the JD:
-  1. FIT       — positive evidence the person can do this job
-  2. PENALTY   — the explicit disqualifiers the JD says it actively applies
-  3. BEHAVIOR  — is the person actually available/hireable (Redrob signals)
+  1. FIT       - positive evidence the person can do this job
+  2. PENALTY   - the explicit disqualifiers the JD says it actively applies
+  3. BEHAVIOR  - is the person actually available/hireable (Redrob signals)
 Plus an IMPOSSIBILITY gate that catches honeypots (internally contradictory profiles).
 
 Single source of truth (Phase 2 refactor)
 ------------------------------------------
 Role classification lives in classify.py, the honeypot gate in honeypot.py, and
-every vocabulary in vocab.py — this module imports them rather than carrying
+every vocabulary in vocab.py - this module imports them rather than carrying
 copies. The fit weight vector and final composition live in score.py; this
 module only EXTRACTS the raw feature components (unrounded), and score.py turns
 them into a number. That keeps the one tunable knob in one place.
@@ -60,14 +60,11 @@ def _parse_date(s):
 
 
 # --- Assessment/endorsement corroboration on the relevant-skill term (Phase 9) ---
-# Signal #9 (redrob_signals.skill_assessment_scores: skill_name -> 0..100) plus
-# per-skill endorsements, used as a *corroboration multiplier* centered at 1.0 on
-# each relevant skill's contribution. It rewards a claim the Redrob assessment
-# backs, discounts a claim the assessment contradicts (the keyword-stuffer counter:
-# a claimed "expert" with a low score is exposed), and stays NEUTRAL when there is
-# no assessment — coverage is sparse (~8% of relevant skills), so absence is not
-# evidence of weakness and must not penalise genuine experts. Endorsements are
-# dense but noisy, so they only ever nudge upward, never down.
+# Corroboration multiplier (centered at 1.0) on each relevant skill's contribution,
+# from signal #9 (skill_assessment_scores) + endorsements. Why: the direct
+# keyword-stuffer counter - a claimed "expert" the assessment scores low is discounted,
+# a backed claim is boosted. Absent assessment stays NEUTRAL (only ~8% of relevant
+# skills have one, so absence isn't weakness); endorsements only ever nudge upward.
 USE_ASSESSMENT_CORROB = True   # toggle for before/after validation
 CORROB_PIVOT = 50.0            # ~ population median assessment (~53)
 CORROB_MAX_BOOST = 0.25        # at/above pivot+HI_REF -> +25%
@@ -107,7 +104,7 @@ def extract_features(c):
 
     Returns the components score.py composes into the final score, plus the
     profile/signals carried for reasoning generation. Does NOT apply the fit
-    weight vector — that is score.py's job (single tunable knob).
+    weight vector - that is score.py's job (single tunable knob).
     """
     p = c["profile"]
     sig = c.get("redrob_signals", {})

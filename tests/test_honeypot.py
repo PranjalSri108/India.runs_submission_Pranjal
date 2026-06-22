@@ -31,14 +31,14 @@ def test_known_honeypots_score_low():
 
 def test_known_honeypots_collapse():
     """Graduated gate should collapse true honeypots toward zero, not just
-    haircut them — they each claim a skill for ~2.5x their whole career."""
+    haircut them - they each claim a skill for ~2.5x their whole career."""
     sample = _load_sample()
     for cid in KNOWN_HONEYPOTS:
         score = impossibility_score(sample[cid])
         assert score <= 0.1, f"{cid} scored {score} (expected near-zero collapse)"
 
 
-# NOTE: impossibility_score intentionally diverges from the prototype here —
+# NOTE: impossibility_score intentionally diverges from the prototype here -
 # Check A moved from an additive slack (over-firing on 5.4% of the pool) to a
 # graduated ratio gate. So there is no honeypot<->prototype parity test.
 # classify_role is unchanged, so its parity with the prototype still holds.

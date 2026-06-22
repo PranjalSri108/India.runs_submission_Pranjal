@@ -1,4 +1,4 @@
-# COMPLIANCE — final submission gate (traceability + red-team)
+# COMPLIANCE - final submission gate (traceability + red-team)
 
 Master pre-submission gate. Every requirement from `data/submission_spec.docx`
 (§2 file format, §3 rules, §5 stages, §10 deliverables) mapped to how it is satisfied,
@@ -23,7 +23,7 @@ Legend: **PASS** = verified now · **ACTION** = correct but needs a human step b
 | UTF-8 encoding | §2 | `csv.writer` UTF-8 text mode | decodes as UTF-8; validator opens `encoding="utf-8"` & passes (70 non-ASCII = em-dashes, all valid UTF-8) | **PASS** |
 | Header exactly `candidate_id,rank,score,reasoning`, in order | §2 | `HEADER` constant | header check = exact match | **PASS** |
 | Exactly 100 data rows (+1 header) | §3 | `TOP_N=100` | 100 data rows / 101 total | **PASS** |
-| Each rank 1–100 exactly once | §3 | `enumerate(...,1)` | `sorted(ranks)==1..100` → True | **PASS** |
+| Each rank 1-100 exactly once | §3 | `enumerate(...,1)` | `sorted(ranks)==1..100` → True | **PASS** |
 | Each candidate_id once; matches `CAND_[0-9]{7}` | §3 | IDs verbatim from pool | unique=True, pattern=True | **PASS** |
 | Every candidate_id exists in `candidates.jsonl` | §3 | IDs taken from the pool stream | independent check: 100/100 ⊆ pool | **PASS** |
 | score is float, non-increasing with rank | §2, §3 | sort `(-round(score,6), id)`; written `%.6f` | non-increasing = True | **PASS** |
@@ -31,7 +31,7 @@ Legend: **PASS** = verified now · **ACTION** = correct but needs a human step b
 | Scores differentiated (not all equal) | §3, §6 | feature-based scoring | **100 distinct scores / 100** | **PASS** |
 | Proper CSV quoting → every row 4 columns | §3, §6 | `csv.writer` QUOTE_MINIMAL | strict re-parse: every row = 4 cols | **PASS** |
 
-## 2. Reasoning quality (§3, Stage 4 — the 6 checks)
+## 2. Reasoning quality (§3, Stage 4 - the 6 checks)
 
 Measured over all 100 rows of `submission.csv` (heuristic audit, `/tmp/verify_all.py`).
 
@@ -66,19 +66,19 @@ Measured over all 100 rows of `submission.csv` (heuristic audit, `/tmp/verify_al
 | 5 | Pre-computed artifacts or a build script | §10.3 | none needed (no embeddings/indexes/weights) | `requirements.txt` (stdlib ranker) | **PASS** |
 | 6 | Pinned dependencies | §10.3 | `pytest==8.2.0`; sandbox `streamlit/altair/pandas` pinned `==` | `requirements*.txt` | **PASS** |
 | 7 | Single command produces CSV from candidates file | §10.3 | flags match the spec example; path is a CLI arg | `src/rank.py:_parse_args` | **PASS** |
-| 8 | Working hosted sandbox link | §10.5 | `app.py` runs the real ranker on `sample_candidates.json` (≤100) on CPU; deploy steps in README | `app.py`, README §"Deploying the sandbox" | **ACTION** (deploy + set URL — mandatory at Stage 1) |
+| 8 | Working hosted sandbox link | §10.5 | `app.py` runs the real ranker on `sample_candidates.json` (≤100) on CPU; deploy steps in README | `app.py`, README §"Deploying the sandbox" | **ACTION** (deploy + set URL - mandatory at Stage 1) |
 | 9 | Methodology ≤200 words | §10.2 | filled (169 words) | `submission_metadata.yaml:methodology_summary` | **PASS** |
 | 10 | AI-tools declaration | §10.4 | declared (Claude) | `submission_metadata.yaml:ai_tools_used` | **PASS** (confirm any others) |
 
-## 5. Disqualifiers (§5–§7) — actively defended
+## 5. Disqualifiers (§5-§7) - actively defended
 
 | Disqualifier | Source | Defense | Evidence | Status |
 |---|---|---|---|---|
 | Honeypot rate > 10% in top-100 | §7, Stage 3 | multiplicative impossibility gate; scan on FINAL top-100 | **0 / 100** | **PASS** |
 | Can't reproduce in 5 min / 16 GB / CPU | Stage 3 | 20.3 s / 0.81 GB / stdlib; fresh-clone reproduced byte-identical | `scripts/run.sh`, clone test | **PASS** |
 | Any format violation | Stage 1 | official validator passes | validator output | **PASS** |
-| Missing/unreachable repo | Stage 1/3 | — | no git remote yet | **ACTION** (push + grant access) |
-| Missing sandbox | Stage 1 | — | not deployed yet | **ACTION** (deploy) |
+| Missing/unreachable repo | Stage 1/3 | - | no git remote yet | **ACTION** (push + grant access) |
+| Missing sandbox | Stage 1 | - | not deployed yet | **ACTION** (deploy) |
 | Flat git history (single dump) | Stage 4 | honest per-phase commits (Phase 0→9) with real iteration | `git log` (15+ commits) | **PASS** |
 | Codebase is just LLM calls | Stage 4 | zero LLM/network calls; feature logic is ours | `src/`, import audit | **PASS** |
 | Can't defend architecture | Stage 5 | `DECISIONS.md` (9 entries), `eval/AUDIT.md`, `eval/TRAP_HANDLING.md`, `PLAN.md` | those files | **PASS** |
@@ -90,14 +90,14 @@ Measured over all 100 rows of `submission.csv` (heuristic audit, `/tmp/verify_al
 | No large files | largest tracked = 300 KB sample; none > 1 MB | `git ls-files | du` | **PASS** |
 | No secrets/keys/PII | secret-pattern scan clean | `git grep` scan | **PASS** |
 | Pool gitignored, never committed | `.gitignore`; absent from history | `git log --diff-filter=A` → none | **PASS** |
-| Working tree clean | — | `git status` empty | **PASS** |
-| Repo pushed & reachable | — | **no remote configured** | **ACTION** |
+| Working tree clean | - | `git status` empty | **PASS** |
+| Repo pushed & reachable | - | **no remote configured** | **ACTION** |
 
 ---
 
 ## 7. Red-team pass (skeptical grader's mindset)
 
-Every remaining way this could be rejected, lose points, or fail to reproduce — with a fix.
+Every remaining way this could be rejected, lose points, or fail to reproduce - with a fix.
 
 1. **Repo not pushed (BLOCKER).** No git remote; Stage-1 flags a missing/unreachable
    repo and Stage-3 cannot pull it. *Fix:* create the GitHub repo, `git push -u origin
@@ -121,12 +121,12 @@ Every remaining way this could be rejected, lose points, or fail to reproduce �
    reproduction needs the bundle pool placed in `data/`. *Mitigation:* README step 2
    documents this; loader auto-resolves `.jsonl`/`.jsonl.gz` by magic bytes. This matches
    how the bundle ships the data (not in the repo).
-7. **Non-ASCII in reasoning (LOW).** 70 em-dashes (UTF-8) — fully compliant with §2 and
+7. **Non-ASCII in reasoning (LOW).** 70 em-dashes (UTF-8) - fully compliant with §2 and
    the validator passes. *Note:* only a risk if someone opens the CSV as non-UTF-8 (e.g.
    legacy Excel); the portal validator uses UTF-8. Optional: ASCII-ize dashes for maximum
-   portability — not required.
-8. **Score scale (LOW).** Scores are unbounded (top ≈ 23.5), not 0–1 like the spec's
-   *example*. §2/§3 require only a non-increasing float — no range. *Mitigation:* none
+   portability - not required.
+8. **Score scale (LOW).** Scores are unbounded (top ≈ 23.5), not 0-1 like the spec's
+   *example*. §2/§3 require only a non-increasing float - no range. *Mitigation:* none
    needed; differentiation (100 distinct) and monotonicity are what's checked.
 9. **NDCG@10 = 1.000 on the held-out 52 could look like overfitting (LOW).**
    *Mitigation:* the headline numbers reported are the conservative full-60 set
@@ -136,7 +136,7 @@ Every remaining way this could be rejected, lose points, or fail to reproduce �
 10. **MISS = 2 on the full-60 set (LOW).** Both are over-band tier-3 profiles the
     seniority gate intentionally demotes (and both are low-confidence labels); on the
     held-out 52, MISS = 0. Documented in README footnote + DECISIONS #5.
-11. **Runtime variance (LOW).** Observed 12–22 s across runs (machine load); worst case
+11. **Runtime variance (LOW).** Observed 12-22 s across runs (machine load); worst case
     far under the 5-min budget. README now states ~20 s.
 12. **3-submission cap (PROCESS).** Only 3 total submissions. *Recommendation:* upload
     once, deliberately, after the four ACTIONs above are done.
@@ -148,7 +148,7 @@ non-reproducible result. All open items are submission logistics, not ranker bug
 
 ## 8. Verdict
 
-**NO-GO to submit yet — technical artifact is GO.** The ranking, CSV, reasoning,
+**NO-GO to submit yet - technical artifact is GO.** The ranking, CSV, reasoning,
 determinism, compute budget, tests, and repo hygiene all PASS; submission is blocked
 only on four human-only steps below.
 

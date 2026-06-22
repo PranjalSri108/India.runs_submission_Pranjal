@@ -1,11 +1,11 @@
 """
-classify.py — Role classification, the heart of fit scoring.
+classify.py - Role classification, the heart of fit scoring.
 
 Key data lesson (from exploring the sample): career_history *descriptions* are
-partly shuffled/templated noise — a "Project Manager" role can be described in
+partly shuffled/templated noise - a "Project Manager" role can be described in
 "brand design" language. Structured fields (title, industry, company) are
 reliable. So we classify a role primarily by TITLE + INDUSTRY, and use the
-description only as a weak corroborating *bonus* — never to drive a score down.
+description only as a weak corroborating *bonus* - never to drive a score down.
 
 Behavior here is preserved verbatim from the validated prototype (features.py).
 """
