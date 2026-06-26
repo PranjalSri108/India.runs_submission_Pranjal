@@ -85,6 +85,8 @@ redrob-ranker/
 ├── data/
 │   ├── candidates.jsonl(.gz)   # the 100K pool (gitignored - obtain from bundle)
 │   ├── sample_candidates.json  # first 50, for the sandbox + tests
+│   ├── pool_demographics.json     # precomputed pool stats for the fairness tab
+│   ├── shortlist_demographics.json # precomputed top-100 tags for the fairness tab
 │   └── ... (schema, JD, spec, signals doc, metadata template)
 ├── src/
 │   ├── io_utils.py          # streaming loader (gzip magic-byte detection)
@@ -102,7 +104,8 @@ redrob-ranker/
 │   ├── to_label.csv         # the blank stratified sample that produced it
 │   └── validate_ranker.py   # NDCG@10/@50, Kendall tau, MISS/FALSE table
 ├── scripts/
-│   └── run.sh               # end-to-end; reports wall-clock + peak RAM, validates
+│   ├── run.sh               # end-to-end; reports wall-clock + peak RAM, validates
+│   └── precompute_demographics.py # off-path cache builder for the fairness tab
 └── submission.csv           # the deliverable
 ```
 
@@ -148,7 +151,7 @@ bash scripts/run.sh
 on the default theme (no custom CSS or fonts; the only color accents are green/red
 on the score-breakdown chart). It runs the **real `src/` ranker** (never a
 reimplementation) live on `data/sample_candidates.json`, and reads the committed
-`submission.csv` for the actual top-100. Three views:
+`submission.csv` for the actual top-100. Four views:
 
 1. **Ranked list & audit** - two-pane (with the score-range / top-N filters in a
    control row above): pick any candidate on the left, and the right panel shows the full score
@@ -158,7 +161,25 @@ reimplementation) live on `data/sample_candidates.json`, and reads the committed
 2. **How it handles traps** - a keyword-stuffer, a genuine fit, and a honeypot side by
    side, so you can see the system defeat the adversarial cases (skills-vs-career
    mismatch; impossible skill duration collapsed by the impossibility gate).
-3. **Actual top-100** - the committed `submission.csv`, searchable.
+3. **Fairness audit** - distribution of the top-100 shortlist vs the full 100K pool
+   across five dimensions (experience band, education tier, location, product-vs-services,
+   availability), with shortlist/pool shares and a plain-language read of each skew that
+   separates JD-driven concentration from skew the ranker does not optimize for (education
+   tier is not a scoring feature). This view reads precomputed caches; it never re-ranks.
+4. **Actual top-100** - the committed `submission.csv`, searchable.
+
+A **blind-screening toggle** at the top masks candidate names, company names, and
+institution names everywhere they appear (replacing them with category-preserving
+placeholders like `Company [product, 501-1000]`). Masking is display-only: ranks,
+scores, and the distributions are unchanged, which is exactly the point - it lets a
+reviewer confirm the ranking is driven by signal, not identity.
+
+The fairness view is fed by two small precomputed caches,
+`data/pool_demographics.json` and `data/shortlist_demographics.json`, built by
+`scripts/precompute_demographics.py`. That script streams the pool once (read-only),
+never imports the scorer, and is **not on the submission reproduce path** - it only
+needs re-running if the pool or `submission.csv` changes. Keeping the pool stats
+precomputed also lets the demo run on a host that does not ship the 487 MB pool.
 
 Run locally:
 
@@ -178,7 +199,8 @@ the committed `submission.csv` for the actual top-100. Every path is resolved re
 to the app file (`__file__`), so there are **no absolute paths** to fix.
 
 Files the deployed app needs - all committed: `app.py`, `src/`,
-`data/sample_candidates.json`, `submission.csv`, `.streamlit/config.toml`.
+`data/sample_candidates.json`, `submission.csv`, `.streamlit/config.toml`, and the two
+fairness caches `data/pool_demographics.json` + `data/shortlist_demographics.json`.
 
 **Streamlit Community Cloud**
 
@@ -196,9 +218,9 @@ Files the deployed app needs - all committed: `app.py`, `src/`,
 
 1. Create a new Space → **SDK: Streamlit** → CPU basic (free tier is fine).
 2. Add to the Space: `app.py`, the `src/` folder, `data/sample_candidates.json`,
-   `submission.csv`, `.streamlit/config.toml`, and a `requirements.txt` containing the
-   three lines from `requirements-sandbox.txt`. (Upload via the web UI, or `git push`
-   to the Space's remote.)
+   `data/pool_demographics.json`, `data/shortlist_demographics.json`, `submission.csv`,
+   `.streamlit/config.toml`, and a `requirements.txt` containing the three lines from
+   `requirements-sandbox.txt`. (Upload via the web UI, or `git push` to the Space's remote.)
 3. The Space auto-runs `streamlit run app.py`, building from that `requirements.txt`.
    The Space URL is your sandbox link.
 

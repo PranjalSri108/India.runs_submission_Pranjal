@@ -1,0 +1,1605 @@
+{
+ "candidates": [
+  {
+   "candidate_id": "CAND_0006557",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Paytm",
+   "company_size": "10001+",
+   "institution": "RV College of Engineering",
+   "name": "Divya Goyal",
+   "rank": 1,
+   "title": "NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0068811",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Freshworks",
+   "company_size": "5001-10000",
+   "institution": "Thapar University",
+   "name": "Krishna Mittal",
+   "rank": 2,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0081846",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Razorpay",
+   "company_size": "1001-5000",
+   "institution": "IIT Hyderabad",
+   "name": "Arjun Khanna",
+   "rank": 3,
+   "title": "Lead AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0086151",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Wysa",
+   "company_size": "51-200",
+   "institution": "Symbiosis International",
+   "name": "Ayaan Tiwari",
+   "rank": 4,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0018499",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zomato",
+   "company_size": "5001-10000",
+   "institution": "Massachusetts Institute of Technology",
+   "name": "Aarav Trivedi",
+   "rank": 5,
+   "title": "Senior Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0070398",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Genpact AI",
+   "company_size": "10001+",
+   "institution": "IIT Kharagpur",
+   "name": "Riya Saxena",
+   "rank": 6,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0086022",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "Stanford University",
+   "name": "Dhruv Naidu",
+   "rank": 7,
+   "title": "Senior Applied Scientist"
+  },
+  {
+   "candidate_id": "CAND_0077337",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Paytm",
+   "company_size": "10001+",
+   "institution": "Georgia Tech",
+   "name": "Aarav Agarwal",
+   "rank": 8,
+   "title": "Staff Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0075574",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Haptik",
+   "company_size": "201-500",
+   "institution": "Carnegie Mellon University",
+   "name": "Karan Ghosh",
+   "rank": 9,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0011162",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "IIT Kharagpur",
+   "name": "Nisha Sharma",
+   "rank": 10,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0041610",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zoho",
+   "company_size": "10001+",
+   "institution": "SRM University",
+   "name": "Anil Subramanian",
+   "rank": 11,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0062247",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Google",
+   "company_size": "10001+",
+   "institution": "IIT Bombay",
+   "name": "Saanvi Trivedi",
+   "rank": 12,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0028793",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Google",
+   "company_size": "10001+",
+   "institution": "BITS Pilani",
+   "name": "Myra Dutta",
+   "rank": 13,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0018549",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Uber",
+   "company_size": "10001+",
+   "institution": "Stanford University",
+   "name": "Mira Verma",
+   "rank": 14,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0041669",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "CRED",
+   "company_size": "1001-5000",
+   "institution": "IIT Guwahati",
+   "name": "Aisha Banerjee",
+   "rank": 15,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0066376",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Dream11",
+   "company_size": "1001-5000",
+   "institution": "IIT Kharagpur",
+   "name": "Amit Goyal",
+   "rank": 16,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0027801",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "InMobi",
+   "company_size": "1001-5000",
+   "institution": "Manipal Institute of Technology",
+   "name": "Anil Mittal",
+   "rank": 17,
+   "title": "NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0006418",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Verloop.io",
+   "company_size": "51-200",
+   "institution": "Stanford University",
+   "name": "Rahul Mukherjee",
+   "rank": 18,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0049896",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Unacademy",
+   "company_size": "5001-10000",
+   "institution": "Chandigarh University",
+   "name": "Neha Vora",
+   "rank": 19,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0009691",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "LinkedIn",
+   "company_size": "10001+",
+   "institution": "Delhi College of Engineering",
+   "name": "Ira Subramanian",
+   "rank": 20,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0010257",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Google",
+   "company_size": "10001+",
+   "institution": "COEP Pune",
+   "name": "Ira Shetty",
+   "rank": 21,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0006567",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Meta",
+   "company_size": "10001+",
+   "institution": "IIT Bombay",
+   "name": "Aditya Subramanian",
+   "rank": 22,
+   "title": "Senior AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0052328",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Amazon",
+   "company_size": "10001+",
+   "institution": "Stanford University",
+   "name": "Vikram Banerjee",
+   "rank": 23,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0029367",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Rephrase.ai",
+   "company_size": "11-50",
+   "institution": "SRM University",
+   "name": "Yash Malhotra",
+   "rank": 24,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0046525",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Genpact AI",
+   "company_size": "10001+",
+   "institution": "IIT Hyderabad",
+   "name": "Tanvi Mukherjee",
+   "rank": 25,
+   "title": "Senior Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0061265",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zoho",
+   "company_size": "10001+",
+   "institution": "IIT Madras",
+   "name": "Tanya Chopra",
+   "rank": 26,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0007412",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zoho",
+   "company_size": "10001+",
+   "institution": "IIT Hyderabad",
+   "name": "Pranav Shah",
+   "rank": 27,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0037980",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "BITS Pilani",
+   "name": "Reyansh Chowdary",
+   "rank": 28,
+   "title": "Senior Applied Scientist"
+  },
+  {
+   "candidate_id": "CAND_0081053",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Glance",
+   "company_size": "501-1000",
+   "institution": "IIT Madras",
+   "name": "Om Chopra",
+   "rank": 29,
+   "title": "NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0050454",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Rephrase.ai",
+   "company_size": "11-50",
+   "institution": "IIT Kanpur",
+   "name": "Saanvi Bansal",
+   "rank": 30,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0000031",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Swiggy",
+   "company_size": "5001-10000",
+   "institution": "SRM University",
+   "name": "Ela Singh",
+   "rank": 31,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0071974",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Netflix",
+   "company_size": "10001+",
+   "institution": "NIT Warangal",
+   "name": "Sai Verma",
+   "rank": 32,
+   "title": "Senior AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0066999",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Microsoft",
+   "company_size": "10001+",
+   "institution": "IIIT Bangalore",
+   "name": "Riya Dalal",
+   "rank": 33,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0064326",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "COEP Pune",
+   "name": "Nisha Pillai",
+   "rank": 34,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0005649",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "RV College of Engineering",
+   "name": "Riya Kapoor",
+   "rank": 35,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0015578",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zoho",
+   "company_size": "10001+",
+   "institution": "NIT Trichy",
+   "name": "Ved Singh",
+   "rank": 36,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0069905",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "PES University",
+   "name": "Nisha Bansal",
+   "rank": 37,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0016163",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Dream11",
+   "company_size": "1001-5000",
+   "institution": "Jadavpur University",
+   "name": "Suresh Shah",
+   "rank": 38,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0093193",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "Jadavpur University",
+   "name": "Aarohi Bose",
+   "rank": 39,
+   "title": "Senior Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0030468",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Swiggy",
+   "company_size": "5001-10000",
+   "institution": "IIT Delhi",
+   "name": "Pooja Bose",
+   "rank": 40,
+   "title": "Senior Applied Scientist"
+  },
+  {
+   "candidate_id": "CAND_0037566",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "LinkedIn",
+   "company_size": "10001+",
+   "institution": "Jadavpur University",
+   "name": "Ritu Nair",
+   "rank": 41,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0008425",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Ola",
+   "company_size": "5001-10000",
+   "institution": "BITS Pilani",
+   "name": "Myra Krishnan",
+   "rank": 42,
+   "title": "Senior NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0027691",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Haptik",
+   "company_size": "201-500",
+   "institution": "Thapar University",
+   "name": "Ayaan Goyal",
+   "rank": 43,
+   "title": "NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0026532",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "2 to 5"
+   },
+   "company": "Zomato",
+   "company_size": "5001-10000",
+   "institution": "Georgia Tech",
+   "name": "Aarav Sethi",
+   "rank": 44,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0096142",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "IIIT Bangalore",
+   "name": "Pranav Sethi",
+   "rank": 45,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0017960",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Nykaa",
+   "company_size": "1001-5000",
+   "institution": "IIT Delhi",
+   "name": "Pari Shah",
+   "rank": 46,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0078492",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Verloop.io",
+   "company_size": "51-200",
+   "institution": "IIT Delhi",
+   "name": "Aadhya Vora",
+   "rank": 47,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0061175",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Haptik",
+   "company_size": "201-500",
+   "institution": "Symbiosis International",
+   "name": "Reyansh Chatterjee",
+   "rank": 48,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0076251",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Haptik",
+   "company_size": "201-500",
+   "institution": "Jadavpur University",
+   "name": "Atharv Pandey",
+   "rank": 49,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0081852",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Mad Street Den",
+   "company_size": "201-500",
+   "institution": "Manipal Institute of Technology",
+   "name": "Krishna Subramanian",
+   "rank": 50,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0098846",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "IIT Kanpur",
+   "name": "Shreya Saxena",
+   "rank": 51,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0007009",
+   "cat": {
+    "availability": "Open, recent",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Wysa",
+   "company_size": "51-200",
+   "institution": "Anna University",
+   "name": "Anika Pillai",
+   "rank": 52,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0083879",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Ola",
+   "company_size": "5001-10000",
+   "institution": "NIT Surathkal",
+   "name": "Mira Reddy",
+   "rank": 53,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0088025",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Yellow.ai",
+   "company_size": "201-500",
+   "institution": "COEP Pune",
+   "name": "Amit Arora",
+   "rank": 54,
+   "title": "Staff Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0039383",
+   "cat": {
+    "availability": "Open, recent",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Meesho",
+   "company_size": "1001-5000",
+   "institution": "IISc Bangalore",
+   "name": "Riya Malhotra",
+   "rank": 55,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0002025",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Apple",
+   "company_size": "10001+",
+   "institution": "IIIT Bangalore",
+   "name": "Ira Dalal",
+   "rank": 56,
+   "title": "Senior AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0083307",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "CRED",
+   "company_size": "1001-5000",
+   "institution": "COEP Pune",
+   "name": "Neha Patel",
+   "rank": 57,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0058575",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Krutrim",
+   "company_size": "201-500",
+   "institution": "Anna University",
+   "name": "Suresh Dutta",
+   "rank": 58,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0010149",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Glance",
+   "company_size": "501-1000",
+   "institution": "IIIT Hyderabad",
+   "name": "Ved Tiwari",
+   "rank": 59,
+   "title": "ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0079387",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Microsoft",
+   "company_size": "10001+",
+   "institution": "IIIT Hyderabad",
+   "name": "Sneha Arora",
+   "rank": 60,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0046353",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Razorpay",
+   "company_size": "1001-5000",
+   "institution": "UC Berkeley",
+   "name": "Sneha Tiwari",
+   "rank": 61,
+   "title": "ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0007460",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "2 to 5"
+   },
+   "company": "Salesforce",
+   "company_size": "10001+",
+   "institution": "VIT Chennai",
+   "name": "Anika Sethi",
+   "rank": 62,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0079064",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "SRM Chennai",
+   "name": "Sai Saxena",
+   "rank": 63,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0044222",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "PolicyBazaar",
+   "company_size": "5001-10000",
+   "institution": "IISc Bangalore",
+   "name": "Dev Shah",
+   "rank": 64,
+   "title": "AI Engineer"
+  },
+  {
+   "candidate_id": "CAND_0011687",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "IIT Delhi",
+   "name": "Shreya Tiwari",
+   "rank": 65,
+   "title": "Senior NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0083852",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Mad Street Den",
+   "company_size": "201-500",
+   "institution": "RV College of Engineering",
+   "name": "Reyansh Banerjee",
+   "rank": 66,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0075249",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zomato",
+   "company_size": "5001-10000",
+   "institution": "IIT Hyderabad",
+   "name": "Ishaan Arora",
+   "rank": 67,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0091909",
+   "cat": {
+    "availability": "Open, recent",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Rephrase.ai",
+   "company_size": "11-50",
+   "institution": "IIIT Bangalore",
+   "name": "Pooja Tiwari",
+   "rank": 68,
+   "title": "Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0048558",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Rephrase.ai",
+   "company_size": "11-50",
+   "institution": "VIT Vellore",
+   "name": "Aisha Joshi",
+   "rank": 69,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0004402",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Yellow.ai",
+   "company_size": "201-500",
+   "institution": "IIT Guwahati",
+   "name": "Priya Malhotra",
+   "rank": 70,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0077285",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Nykaa",
+   "company_size": "1001-5000",
+   "institution": "PES University",
+   "name": "Priya Chowdary",
+   "rank": 71,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0012837",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "Anna University",
+   "name": "Myra Chowdary",
+   "rank": 72,
+   "title": "Junior ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0052195",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Sarvam AI",
+   "company_size": "51-200",
+   "institution": "Chandigarh University",
+   "name": "Sunil Goyal",
+   "rank": 73,
+   "title": "Computer Vision Engineer"
+  },
+  {
+   "candidate_id": "CAND_0032216",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "IISc Bangalore",
+   "name": "Rahul Shetty",
+   "rank": 74,
+   "title": "ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0061257",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "LinkedIn",
+   "company_size": "10001+",
+   "institution": "IIT Roorkee",
+   "name": "Advaith Pillai",
+   "rank": 75,
+   "title": "Staff Machine Learning Engineer"
+  },
+  {
+   "candidate_id": "CAND_0072688",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "KIIT University",
+   "name": "Rajesh Goyal",
+   "rank": 76,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0031593",
+   "cat": {
+    "availability": "Open, recent",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Genpact AI",
+   "company_size": "10001+",
+   "institution": "SRM University",
+   "name": "Aanya Chopra",
+   "rank": 77,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0033987",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Wysa",
+   "company_size": "51-200",
+   "institution": "VIT Chennai",
+   "name": "Atharv Bose",
+   "rank": 78,
+   "title": "ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0062413",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "VIT Vellore",
+   "name": "Pari Joshi",
+   "rank": 79,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0095528",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Netflix",
+   "company_size": "10001+",
+   "institution": "IIIT Bangalore",
+   "name": "Amit Dalal",
+   "rank": 80,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0065878",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Niramai",
+   "company_size": "51-200",
+   "institution": "Manipal Institute of Technology",
+   "name": "Suresh Kapoor",
+   "rank": 81,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0088385",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Swiggy",
+   "company_size": "5001-10000",
+   "institution": "Lovely Professional University",
+   "name": "Manish Mukherjee",
+   "rank": 82,
+   "title": "Computer Vision Engineer"
+  },
+  {
+   "candidate_id": "CAND_0053695",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Meesho",
+   "company_size": "1001-5000",
+   "institution": "IIT Delhi",
+   "name": "Sanjay Sharma",
+   "rank": 83,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0017590",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Genpact AI",
+   "company_size": "10001+",
+   "institution": "VJTI Mumbai",
+   "name": "Sunil Agarwal",
+   "rank": 84,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0019288",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Paytm",
+   "company_size": "10001+",
+   "institution": "RV College of Engineering",
+   "name": "Ved Dutta",
+   "rank": 85,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0099269",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "BYJU'S",
+   "company_size": "10001+",
+   "institution": "NIT Trichy",
+   "name": "Ishaan Singh",
+   "rank": 86,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0076163",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Ola",
+   "company_size": "5001-10000",
+   "institution": "VJTI Mumbai",
+   "name": "Nikhil Mittal",
+   "rank": 87,
+   "title": "NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0058426",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Wysa",
+   "company_size": "51-200",
+   "institution": "RV College of Engineering",
+   "name": "Aisha Dutta",
+   "rank": 88,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0036184",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "CRED",
+   "company_size": "1001-5000",
+   "institution": "VJTI Mumbai",
+   "name": "Riya Chopra",
+   "rank": 89,
+   "title": "Recommendation Systems Engineer"
+  },
+  {
+   "candidate_id": "CAND_0073504",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 3",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "PolicyBazaar",
+   "company_size": "5001-10000",
+   "institution": "Lovely Professional University",
+   "name": "Pranav Pillai",
+   "rank": 90,
+   "title": "Junior ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0044487",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "upGrad",
+   "company_size": "1001-5000",
+   "institution": "COEP Pune",
+   "name": "Sai Sethi",
+   "rank": 91,
+   "title": "Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0018701",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Krutrim",
+   "company_size": "201-500",
+   "institution": "VIT Vellore",
+   "name": "Advik Khanna",
+   "rank": 92,
+   "title": "Junior ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0050876",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Freshworks",
+   "company_size": "5001-10000",
+   "institution": "Stanford University",
+   "name": "Vivaan Shah",
+   "rank": 93,
+   "title": "Applied ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0059017",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "PhonePe",
+   "company_size": "5001-10000",
+   "institution": "IIT Kharagpur",
+   "name": "Pooja Mishra",
+   "rank": 94,
+   "title": "AI Research Engineer"
+  },
+  {
+   "candidate_id": "CAND_0069925",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Glance",
+   "company_size": "501-1000",
+   "institution": "Massachusetts Institute of Technology",
+   "name": "Advik Patel",
+   "rank": 95,
+   "title": "Junior ML Engineer"
+  },
+  {
+   "candidate_id": "CAND_0046064",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Salesforce",
+   "company_size": "10001+",
+   "institution": "IIT Hyderabad",
+   "name": "Saanvi Naidu",
+   "rank": 96,
+   "title": "Senior NLP Engineer"
+  },
+  {
+   "candidate_id": "CAND_0093912",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 2",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Razorpay",
+   "company_size": "1001-5000",
+   "institution": "RV College of Engineering",
+   "name": "Advik Sethi",
+   "rank": 97,
+   "title": "Senior Data Scientist"
+  },
+  {
+   "candidate_id": "CAND_0009024",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Google",
+   "company_size": "10001+",
+   "institution": "Stanford University",
+   "name": "Avni Sharma",
+   "rank": 98,
+   "title": "Search Engineer"
+  },
+  {
+   "candidate_id": "CAND_0026640",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 4",
+    "location": "India - other",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Observe.AI",
+   "company_size": "201-500",
+   "institution": "Regional Technical Institute",
+   "name": "Advaith Sen",
+   "rank": 99,
+   "title": "Computer Vision Engineer"
+  },
+  {
+   "candidate_id": "CAND_0098780",
+   "cat": {
+    "availability": "Open, active",
+    "company_type": "Product",
+    "education": "Tier 1",
+    "location": "India - preferred hub",
+    "yoe": "5 to 9 (JD band)"
+   },
+   "company": "Zomato",
+   "company_size": "5001-10000",
+   "institution": "NIT Surathkal",
+   "name": "Shreya Singh",
+   "rank": 100,
+   "title": "AI Research Engineer"
+  }
+ ],
+ "shortlist_size": 100
+}

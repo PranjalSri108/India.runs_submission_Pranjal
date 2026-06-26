@@ -1,0 +1,81 @@
+{
+ "dimensions": {
+  "availability": {
+   "counts": {
+    "Not open to work": 64661,
+    "Open, active": 12098,
+    "Open, recent": 14569,
+    "Open, stale": 8672
+   },
+   "label": "Availability",
+   "order": [
+    "Open, active",
+    "Open, recent",
+    "Open, stale",
+    "Not open to work"
+   ]
+  },
+  "company_type": {
+   "counts": {
+    "Product": 68845,
+    "Services / consulting": 31155
+   },
+   "label": "Current company type",
+   "order": [
+    "Product",
+    "Services / consulting"
+   ]
+  },
+  "education": {
+   "counts": {
+    "No data": 0,
+    "Tier 1": 6413,
+    "Tier 2": 22996,
+    "Tier 3": 39815,
+    "Tier 4": 30776,
+    "Unknown": 0
+   },
+   "label": "Education tier",
+   "order": [
+    "Tier 1",
+    "Tier 2",
+    "Tier 3",
+    "Tier 4",
+    "Unknown",
+    "No data"
+   ]
+  },
+  "location": {
+   "counts": {
+    "India - other": 45882,
+    "India - preferred hub": 29231,
+    "Outside India": 24887
+   },
+   "label": "Location",
+   "order": [
+    "India - preferred hub",
+    "India - other",
+    "Outside India"
+   ]
+  },
+  "yoe": {
+   "counts": {
+    "0 to 2": 7470,
+    "15+": 251,
+    "2 to 5": 26400,
+    "5 to 9 (JD band)": 34375,
+    "9 to 15": 31504
+   },
+   "label": "Years of experience",
+   "order": [
+    "0 to 2",
+    "2 to 5",
+    "5 to 9 (JD band)",
+    "9 to 15",
+    "15+"
+   ]
+  }
+ },
+ "generated_from": "data/candidates.jsonl",
+ "pool_size": 100000
+}

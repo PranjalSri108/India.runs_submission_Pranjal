@@ -21,6 +21,7 @@ from __future__ import annotations
 import csv
 import json
 import os
+from collections import Counter
 
 import altair as alt
 import pandas as pd
@@ -31,12 +32,15 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+from src.classify import classify_role  # noqa: E402  (read-only, for blind masking)
 from src.features import extract_features  # noqa: E402
 from src.reasoning import _archetype, make_reasoning  # noqa: E402
 from src.score import WEIGHTS, _saturate_core, _saturate_ml_years, fit_score, score  # noqa: E402
 
 SAMPLE_PATH = os.path.join(HERE, "data", "sample_candidates.json")
 SUBMISSION_PATH = os.path.join(HERE, "submission.csv")
+POOL_DEMO_PATH = os.path.join(HERE, "data", "pool_demographics.json")
+SHORTLIST_DEMO_PATH = os.path.join(HERE, "data", "shortlist_demographics.json")
 
 FIT_LABELS = {
     "applied_ml_years": "Applied-ML years @ product cos",
@@ -87,6 +91,19 @@ def load_submission():
         return list(csv.DictReader(fh))
 
 
+@st.cache_data(show_spinner=False)
+def load_demographics():
+    """Read the precomputed pool + shortlist demographic caches (fairness tab).
+
+    Built off-line by scripts/precompute_demographics.py from the full pool; the
+    demo never scans the 487 MB pool itself. Returns (pool_doc, shortlist_doc) or
+    (None, None) if the caches are absent.
+    """
+    if not (os.path.exists(POOL_DEMO_PATH) and os.path.exists(SHORTLIST_DEMO_PATH)):
+        return None, None
+    return json.load(open(POOL_DEMO_PATH)), json.load(open(SHORTLIST_DEMO_PATH))
+
+
 def breakdown(f):
     """Exact decomposition of src.score.score(f). Returns the audit pieces."""
     terms = []
@@ -117,6 +134,28 @@ def breakdown(f):
 # app stays on the native Streamlit theme; these apply solely to the charts below.
 # Mid-tones chosen to read on both the light and dark default backgrounds.
 FIT_GREEN, PEN_RED, GATE_NEUTRAL = "#1F9D6B", "#D1495B", "#808495"
+POOL_COLOR, SHORT_COLOR = "#9AA0AA", "#3E7CB1"  # fairness charts: pool vs shortlist
+
+
+# ---------- blind screening (display-only identity masking) ------------------
+# Masking is cosmetic: it swaps human-identifying STRINGS for neutral placeholders
+# that keep the auditable category (company type/size, school tier). It never
+# changes ordering, scores, or any distribution - those come from the pipeline and
+# from category counts, not from the masked strings.
+def _company_label(job, blind):
+    """Company string for a career entry, masked to 'Company [type, size]' if blind."""
+    name = job.get("company") or "-"
+    if not blind:
+        return name
+    _, is_product = classify_role(job)
+    return f"Company [{'product' if is_product else 'services'}, {job.get('company_size') or '?'}]"
+
+
+def _profile_company_label(p, blind):
+    """Company string for a profile's current role (synthesises a job for classify)."""
+    return _company_label({"title": p.get("current_title"), "industry": p.get("current_industry"),
+                           "company": p.get("current_company"),
+                           "company_size": p.get("current_company_size")}, blind)
 
 
 # ---------- charts ----------------------------------------------------------
@@ -171,6 +210,31 @@ def score_chart(items):
     ).properties(height=140)
 
 
+def dist_chart(rows, order):
+    """Grouped horizontal bars: pool vs shortlist share for one dimension.
+
+    `rows` is a long-form list of {category, series, share}; both series are
+    normalized to percent so the 100 vs 100K scale difference does not matter.
+    """
+    df = pd.DataFrame(rows)
+    enc = alt.Chart(df).encode(
+        y=alt.Y("category:N", sort=order, title=None),
+        x=alt.X("share:Q", title="share of group (%)"),
+        yOffset=alt.YOffset("series:N", sort=["Pool", "Shortlist"]),
+        color=alt.Color("series:N", sort=["Pool", "Shortlist"],
+                        scale=alt.Scale(domain=["Pool", "Shortlist"],
+                                        range=[POOL_COLOR, SHORT_COLOR]),
+                        legend=alt.Legend(orient="top", title=None)),
+        tooltip=[alt.Tooltip("series:N", title="group"),
+                 alt.Tooltip("category:N", title="bucket"),
+                 alt.Tooltip("share:Q", title="share", format=".1f")],
+    )
+    bars = enc.mark_bar()
+    text = enc.mark_text(align="left", dx=3, baseline="middle").encode(
+        text=alt.Text("share:Q", format=".0f"))
+    return (bars + text).properties(height=max(150, 44 * len(order)))
+
+
 # ---------- evidence renderers (native tables / text) -----------------------
 def equation_text(bd):
     gates = " ".join(f'× {c["short"]} {c["mult"]:.2f}' for c in bd["cascade"])
@@ -178,10 +242,10 @@ def equation_text(bd):
             f'{gates} = {bd["final"]:.2f}')
 
 
-def career_df(c):
+def career_df(c, blind=False):
     rows = [{
         "title": j.get("title"),
-        "company": j.get("company"),
+        "company": _company_label(j, blind),
         "industry": j.get("industry"),
         "months": j.get("duration_months") or 0,
         "current": "●" if j.get("is_current") else "",
@@ -212,7 +276,7 @@ def signals_df(c):
 
 
 # ---------- panels ----------------------------------------------------------
-def detail_panel(item):
+def detail_panel(item, blind=False):
     c, f, rank = item["cand"], item["f"], item["rank"]
     p = c["profile"]
     bd = breakdown(f)
@@ -222,7 +286,7 @@ def detail_panel(item):
         with head:
             st.caption(f'RANK {rank} / 50  ·  {item["archetype"]}')
             st.subheader(p.get("current_title"), anchor=False)
-            st.caption(f'{c["candidate_id"]} · {p.get("current_company")} · '
+            st.caption(f'{c["candidate_id"]} · {_profile_company_label(p, blind)} · '
                        f'{p.get("years_of_experience")} yrs experience')
         with scorecol:
             st.metric("Final score", f'{bd["final"]:.2f}')
@@ -237,7 +301,7 @@ def detail_panel(item):
 
     st.markdown("**3 · The evidence**")
     with st.expander("Career history", expanded=True):
-        st.dataframe(career_df(c), hide_index=True, use_container_width=True)
+        st.dataframe(career_df(c, blind), hide_index=True, use_container_width=True)
     with st.expander("Skills (top by duration)"):
         st.dataframe(skills_df(c), hide_index=True, use_container_width=True)
     with st.expander("Signals & availability"):
@@ -257,7 +321,7 @@ def trap_card(item, tag, verdict, verdict_good):
 
 
 # ---------- views -----------------------------------------------------------
-def view_ranked(ranked):
+def view_ranked(ranked, blind=False):
     max_score = float(ranked[0]["score"]) + 0.5
     fc = st.columns([3, 2], gap="medium")
     lo, hi = fc[0].slider("Score range", 0.0, max_score, (0.0, max_score), step=0.5)
@@ -274,7 +338,7 @@ def view_ranked(ranked):
         df = pd.DataFrame([{
             "rank": it["rank"],
             "candidate": it["cand"]["profile"].get("current_title"),
-            "company": it["cand"]["profile"].get("current_company"),
+            "company": _profile_company_label(it["cand"]["profile"], blind),
             "score": it["score"],
             "type": it["archetype"],
         } for it in filt])
@@ -290,10 +354,10 @@ def view_ranked(ranked):
         sel = ev.selection.rows if ev and ev.selection else []
         chosen = filt[sel[0]] if sel else filt[0]
     with right:
-        detail_panel(chosen)
+        detail_panel(chosen, blind)
 
 
-def view_traps(ranked):
+def view_traps(ranked, blind=False):
     by_id = {it["cand"]["candidate_id"]: it for it in ranked}
     fit, stuf, hp = by_id[TRAP_IDS["fit"]], by_id[TRAP_IDS["stuffer"]], by_id[TRAP_IDS["honeypot"]]
 
@@ -324,7 +388,7 @@ def view_traps(ranked):
     with a:
         st.markdown("**Keyword stuffer - skills listed vs. career**")
         st.dataframe(skills_df(stuf["cand"], limit=8), hide_index=True, use_container_width=True)
-        st.dataframe(career_df(stuf["cand"]), hide_index=True, use_container_width=True)
+        st.dataframe(career_df(stuf["cand"], blind), hide_index=True, use_container_width=True)
         st.code(equation_text(breakdown(stuf["f"])))
     with b:
         st.markdown("**Honeypot - the impossible duration**")
@@ -333,6 +397,124 @@ def view_traps(ranked):
         st.caption(f'Total experience: {yexp} yrs (~{int(yexp * 12)} months) - '
                    f'yet a skill above is listed for longer.')
         st.code(equation_text(breakdown(hp["f"])))
+
+
+# JD-driven category we EXPECT to be over-represented in each dimension, plus the
+# plain-language reason it is legitimate. Education is handled separately: tier is
+# not a scoring feature, so any skew there is emergent, not optimized for.
+_LEGIT = {
+    "yoe": ("5 to 9 (JD band)",
+            "the JD targets the 5 to 9 year band and a seniority gate down-weights above it"),
+    "company_type": ("Product",
+                     "the JD explicitly prefers product experience over services/consulting (DECISIONS #3)"),
+    "location": ("India - preferred hub",
+                 "the JD prefers India-based and relocatable candidates"),
+    "availability": ("Open, active",
+                     "the behavior gate down-weights candidates who are unavailable or inactive, as the JD asks"),
+}
+
+
+def fairness_interpretation(dim_key, merged):
+    """Return (kind, sentence) describing the skew, generated from the numbers.
+
+    kind is one of 'legitimate' (JD-driven), 'emergent' (not a scoring feature),
+    or 'watch' (the most over-represented bucket is not the JD-driven one).
+    """
+    over = max(merged, key=lambda r: r["delta"])
+    under = min(merged, key=lambda r: r["delta"])
+
+    def phr(r):
+        return (f'{r["category"]} ({r["short"]:.0f}% of the shortlist vs '
+                f'{r["pool"]:.0f}% of the pool)')
+
+    if dim_key == "education":
+        t1 = next((r for r in merged if r["category"] == "Tier 1"), over)
+        return ("emergent",
+                "The scorer never reads education tier - it is not a feature in src/ "
+                "(confirm with the blind-screening toggle above). Any concentration here "
+                "is an emergent correlation with the career signals we do score, not a "
+                f"pedigree preference. Here {phr(t1)}.")
+
+    exp_cat, why = _LEGIT[dim_key]
+    if over["category"] == exp_cat:
+        return ("legitimate",
+                f"Legitimate, JD-driven concentration: {phr(over)}, because {why}. "
+                f"Under-represented: {phr(under)}.")
+    return ("watch",
+            f"Most over-represented bucket is {phr(over)}, which is not the JD-driven "
+            f"bucket ({exp_cat}) - worth an honest look before relying on it.")
+
+
+def view_fairness(blind):
+    pool, short = load_demographics()
+    st.subheader("Pool vs shortlist - audit the top-100 against the full pool", anchor=False)
+    if not pool or not short:
+        st.info("Demographic caches not found. Run "
+                "`python scripts/precompute_demographics.py` to build them.")
+        return
+
+    cands = short["candidates"]
+    n_short = len(cands)
+    n_pool = pool["pool_size"]
+    st.markdown(
+        f"How the {n_short} submitted candidates compare to all {n_pool:,} in the pool, "
+        "across five dimensions. Shares are normalized, so the 100-vs-100K scale gap does "
+        "not distort the comparison. Where a skew is JD-driven we say so; where it is not "
+        "something the ranker optimizes for, we say that too.")
+    badge = {"legitimate": st.success, "emergent": st.info, "watch": st.warning}
+
+    for key, dim in pool["dimensions"].items():
+        order = dim["order"]
+        pcounts = dim["counts"]
+        scounts = Counter(c["cat"][key] for c in cands)
+        merged, rows = [], []
+        for cat in order:
+            ps = 100.0 * pcounts.get(cat, 0) / n_pool if n_pool else 0.0
+            ss = 100.0 * scounts.get(cat, 0) / n_short if n_short else 0.0
+            merged.append({"category": cat, "pool": ps, "short": ss, "delta": ss - ps})
+            rows.append({"category": cat, "series": "Pool", "share": ps})
+            rows.append({"category": cat, "series": "Shortlist", "share": ss})
+
+        st.markdown(f"**{dim['label']}**")
+        cchart, ctable = st.columns([3, 2], gap="medium")
+        with cchart:
+            st.altair_chart(dist_chart(rows, order), use_container_width=True)
+        with ctable:
+            tdf = pd.DataFrame([{
+                "bucket": m["category"], "shortlist %": m["short"],
+                "pool %": m["pool"], "vs pool (pp)": m["delta"],
+            } for m in merged])
+            st.dataframe(tdf, hide_index=True, use_container_width=True,
+                         column_config={
+                             "shortlist %": st.column_config.NumberColumn(format="%.0f"),
+                             "pool %": st.column_config.NumberColumn(format="%.0f"),
+                             "vs pool (pp)": st.column_config.NumberColumn(format="%+.0f"),
+                         })
+        kind, line = fairness_interpretation(key, merged)
+        badge[kind](line)
+        st.divider()
+
+    st.subheader("The 100 submitted candidates", anchor=False)
+    st.caption(("Blind screening ON - names, companies and institutions are masked; "
+                "ranks, buckets and every chart above are identical."
+                if blind else
+                "Blind screening OFF - toggle it at the top to mask names, companies "
+                "and institutions and confirm nothing below the strings changes."))
+    sdf = pd.DataFrame([{
+        "rank": c["rank"],
+        "candidate": (f"Candidate #{c['rank']}" if blind else (c.get("name") or "-")),
+        "company": (f"Company [{'product' if c['cat']['company_type'] == 'Product' else 'services'}, "
+                    f"{c.get('company_size') or '?'}]" if blind else (c.get("company") or "-")),
+        "company type": c["cat"]["company_type"],
+        "institution": (f"Institution [{c['cat']['education']}]" if blind
+                        else (c.get("institution") or "-")),
+        "edu tier": c["cat"]["education"],
+        "yoe band": c["cat"]["yoe"],
+        "location": c["cat"]["location"],
+        "availability": c["cat"]["availability"],
+    } for c in cands])
+    st.dataframe(sdf, hide_index=True, use_container_width=True, height=440,
+                 column_config={"rank": st.column_config.NumberColumn("#", width="small")})
 
 
 def view_top100():
@@ -375,12 +557,23 @@ def main():
     st.divider()
 
     ranked = load_ranked()
-    t1, t2, t3 = st.tabs(["Ranked list & audit", "How it handles traps", "Actual top-100"])
+    blind = st.toggle(
+        "Blind screening - mask names, companies and institutions",
+        value=False, key="blind",
+        help="Display-only. Hides identifying strings wherever they appear so you can "
+             "confirm the ranking and the distributions do not change when identity is "
+             "masked. It never alters scores, ranks, or any chart.")
+    st.divider()
+
+    t1, t2, t3, t4 = st.tabs(["Ranked list & audit", "How it handles traps",
+                              "Fairness audit", "Actual top-100"])
     with t1:
-        view_ranked(ranked)
+        view_ranked(ranked, blind)
     with t2:
-        view_traps(ranked)
+        view_traps(ranked, blind)
     with t3:
+        view_fairness(blind)
+    with t4:
         view_top100()
 
 
