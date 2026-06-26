@@ -41,6 +41,7 @@ SAMPLE_PATH = os.path.join(HERE, "data", "sample_candidates.json")
 SUBMISSION_PATH = os.path.join(HERE, "submission.csv")
 POOL_DEMO_PATH = os.path.join(HERE, "data", "pool_demographics.json")
 SHORTLIST_DEMO_PATH = os.path.join(HERE, "data", "shortlist_demographics.json")
+RESULTS_PATH = os.path.join(HERE, "eval", "results.json")
 
 FIT_LABELS = {
     "applied_ml_years": "Applied-ML years @ product cos",
@@ -102,6 +103,18 @@ def load_demographics():
     if not (os.path.exists(POOL_DEMO_PATH) and os.path.exists(SHORTLIST_DEMO_PATH)):
         return None, None
     return json.load(open(POOL_DEMO_PATH)), json.load(open(SHORTLIST_DEMO_PATH))
+
+
+@st.cache_data(show_spinner=False)
+def load_results():
+    """Read eval/results.json (the header numbers). Regenerated, never hardcoded.
+
+    Built by eval/build_results.py from the live scoring, so the displayed metrics
+    cannot drift from the ranker. Returns None if the file is absent.
+    """
+    if not os.path.exists(RESULTS_PATH):
+        return None
+    return json.load(open(RESULTS_PATH))
 
 
 def breakdown(f):
@@ -539,6 +552,70 @@ def view_top100():
                  })
 
 
+# ---------- header metrics --------------------------------------------------
+_TAU_LABEL = "Kendall τ"  # display label; results.json keeps it ASCII
+
+
+def render_header(res):
+    """Two grouped metric strips: ranking quality (numbers) + constraints (pass pills).
+
+    All values come from eval/results.json so they track the live scoring. The two
+    groups make different claims - measured quality vs rule-compliance - so they are
+    rendered differently: quality as plain numbers with a baseline->current story,
+    constraints as green pass states. No 0-100% gauges (NDCG and tau live on
+    different scales, so a percent dial would mislead).
+    """
+    q, cons, val = res["quality"], res["constraints"], res["validation"]
+
+    st.caption(
+        f"Ranking-quality scores are measured on a {val['n_labels']}-profile "
+        "hand-labeled validation set - a local tuning proxy, not the hidden "
+        "competition score. Constraints are checked on the full 100K pool.")
+
+    st.markdown("**Ranking quality**")
+    qcols = st.columns(3)
+    for col, key in zip(qcols, ("ndcg10", "ndcg50", "tau")):
+        m = q[key]
+        sign = "+" if key == "tau" else ""
+        label = _TAU_LABEL if key == "tau" else m["label"]
+        col.metric(label, f"{sign}{m['current']:.2f}")
+        col.caption(f"{m['sub']}  \n{sign}{m['baseline']:.2f} "
+                    f"→ {sign}{m['current']:.2f} after tuning")
+
+    st.markdown("**Constraints met**")
+    ccols = st.columns(3)
+
+    with ccols[0]:
+        st.markdown("Honeypots in top-100")
+        hp, seeded = cons["honeypots_top100"], cons["honeypots_seeded_approx"]
+        if hp == 0:
+            st.success(f"{hp} of ~{seeded} reached the top-100", icon="✅")
+        else:
+            st.error(f"{hp} impossible profiles in top-100", icon="⚠️")
+        st.caption("impossible profiles caught by the consistency gate")
+
+    with ccols[1]:
+        st.markdown("Runtime, 100K pool")
+        rt, budget = cons["runtime_s"], cons["runtime_budget_s"]
+        if rt <= budget:
+            st.success(f"~{rt:.0f} s, within the {budget // 60}-min budget", icon="✅")
+        else:
+            st.error(f"{rt:.0f} s exceeds the {budget // 60}-min budget", icon="⚠️")
+        st.caption("full 100K pool, CPU-only, no network")
+
+    with ccols[2]:
+        st.markdown("Valid submission")
+        if cons["validator_passed"]:
+            st.success("validator: passed", icon="✅")
+        else:
+            st.error("validator: failed", icon="⚠️")
+        ds, n = cons["distinct_scores"], cons["top_n"]
+        if ds == n:
+            st.success(f"{ds} distinct scores", icon="✅")
+        else:
+            st.warning(f"{ds}/{n} distinct scores", icon="⚠️")
+
+
 # ---------- app -------------------------------------------------------------
 def main():
     st.set_page_config(page_title="Redrob Ranker - explainable ranking",
@@ -550,10 +627,11 @@ def main():
                 "every number below traces to a fact in the profile.")
     st.divider()
 
-    metrics = [("NDCG@10", "0.93"), ("NDCG@50", "0.99"), ("Kendall τ", "+0.77"),
-               ("Honeypots in top-100", "0"), ("Runtime · 100K · CPU", "~20 s")]
-    for col, (label, value) in zip(st.columns(len(metrics)), metrics):
-        col.metric(label, value)
+    res = load_results()
+    if res:
+        render_header(res)
+    else:
+        st.caption("Run `python eval/build_results.py` to populate the metrics header.")
     st.divider()
 
     ranked = load_ranked()

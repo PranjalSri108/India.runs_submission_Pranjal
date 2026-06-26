@@ -1,0 +1,37 @@
+{
+  "constraints": {
+    "distinct_scores": 100,
+    "honeypots_seeded_approx": 80,
+    "honeypots_top100": 0,
+    "runtime_budget_s": 300,
+    "runtime_s": 15.2,
+    "top_n": 100,
+    "validator_passed": true
+  },
+  "generated_by": "eval/build_results.py",
+  "quality": {
+    "ndcg10": {
+      "baseline": 0.871,
+      "current": 0.933,
+      "label": "NDCG@10",
+      "sub": "top-10 ranking quality"
+    },
+    "ndcg50": {
+      "baseline": 0.952,
+      "current": 0.988,
+      "label": "NDCG@50",
+      "sub": "top-50 ranking quality"
+    },
+    "tau": {
+      "baseline": 0.722,
+      "current": 0.771,
+      "label": "Kendall tau",
+      "sub": "rank agreement with human labels"
+    }
+  },
+  "validation": {
+    "n_labels": 60,
+    "note": "local tuning proxy, not the hidden competition score",
+    "set": "60-profile hand-labeled validation set"
+  }
+}
