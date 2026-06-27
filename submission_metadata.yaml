@@ -38,7 +38,7 @@ compute:
   pre_computation_time_minutes: 0
 
 # ============================================================================
-# AI tools declaration (transparency only — not penalized)
+# AI tools declaration 
 # ============================================================================
 ai_tools_used:
   - "Claude"          # Claude Code — pair-programming, code review, refactors
@@ -53,7 +53,7 @@ ai_usage_summary: |
   was sent to any hosted LLM, and the ranker itself makes zero LLM/API calls.
 
 # ============================================================================
-# Approach summary (≤200 words; this is 169)
+# Approach summary 
 # ============================================================================
 methodology_summary: |
   We rank candidates with a feature-based, fully-explainable scorer rather than
