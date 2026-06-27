@@ -1,30 +1,19 @@
 # Redrob Hackathon — Submission Metadata
-# Mirrors the portal metadata (spec §10.2/§10.3). Filled from
-# data/submission_metadata_template.yaml.
-#
-# >>> FIELDS MARKED `# TODO(you)` NEED YOUR INPUT before upload. <<<
-
 # ============================================================================
 # Team identity
 # ============================================================================
-team_name: "TODO(you): your-registered-team-name"   # = your participant ID for the filename
+team_name: "Team Cypher"   # = your participant ID for the filename
 
 primary_contact:
-  name: "TODO(you): Full Name"
-  email: "TODO(you): primary@example.com"
-  phone: "TODO(you): +91-XXXXXXXXXX"
-
-team_members:
-  - name: "TODO(you): Member 1 Full Name"
-    email: "TODO(you): member1@example.com"
-    role: "ML Engineer"
-  # solo participant: keep just one member
+  name: "Pranjal Srivastav"
+  email: "f20230858@pilani.bits-pilani.ac.in"
+  phone: "+91-9140314721'
 
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "TODO(you): https://github.com/USERNAME/REPO"   # must be reachable at Stage 3
-sandbox_link: "TODO(you): https://huggingface.co/spaces/USERNAME/redrob-ranker"  # host app.py (see README "Sandbox")
+github_repo: "https://github.com/PranjalSri108/India.runs_submission_Pranjal"  
+sandbox_link: "https://contributor-televisions-universities-cornell.trycloudflare.com/"  
 
 # Single command that produces submission.csv from the candidates file.
 # The candidates path is a CLI argument (--candidates, or a bare positional),
@@ -53,10 +42,10 @@ compute:
 # ============================================================================
 ai_tools_used:
   - "Claude"          # Claude Code — pair-programming, code review, refactors
-  # TODO(you): add any others you used (ChatGPT / Copilot / Cursor / Gemini), or trim
+  - "Gemini"          # Gemini - reseach work, debugging 
 
 ai_usage_summary: |
-  Used Claude (via Claude Code) as a pair-programming and code-review assistant
+  Used Claude as a pair-programming and code-review assistant
   throughout: scaffolding modules, refactoring to a single-source-of-truth layout,
   writing tests, and drafting docs. All design decisions (feature-based scoring,
   multiplicative gates, the honeypot ratio check, the saturation/seniority-gate fix)
@@ -90,6 +79,6 @@ methodology_summary: |
 declarations:
   read_submission_spec: true
   code_is_original_work: true     # AI used as a tool; engineering is the team's
-  no_collusion: true              # TODO(you): confirm
+  no_collusion: true            
   honeypot_check_done: true       # explicit scan of final top-100 (impossibility<=0.5) == 0
   reproduction_tested: true       # reproduce_command verified end-to-end, byte-deterministic
